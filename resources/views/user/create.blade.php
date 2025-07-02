@@ -87,7 +87,7 @@
             <div class="container">
                 <div class="signup-box box p-5">
                     <div class="has-text-centered mb-5">
-                        <h1 class="title is-3">Join Medium</h1>
+                        <h1 class="title is-3">Join Writehub</h1>
                         <p class="subtitle is-6 has-text-grey">Start reading and writing on Medium today</p>
                     </div>
 
@@ -142,6 +142,9 @@
                                     <i class="fas fa-user"></i>
                                 </span>
                             </div>
+                            @error('name')
+                            <p class="help" style="color:red;">{{ $message }} </p>
+                            @enderror
                         </div>
 
                         <!-- Email Field -->
@@ -153,6 +156,9 @@
                                     <i class="fas fa-envelope"></i>
                                 </span>
                             </div>
+                            @error('email')
+                                <p class="help" style="color: red;">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Password Field -->
@@ -164,7 +170,9 @@
                                     <i class="fas fa-lock"></i>
                                 </span>
                             </div>
-                            <p class="help">Password must be at least 8 characters long</p>
+                            @error('password')
+                                 <p class="help" style="color: red;">{{ $message }}</p>
+                            @enderror
                         </div>
 
                         <!-- Bio Field (Optional) -->
@@ -173,7 +181,11 @@
                             <div class="control">
                                 <textarea class="textarea" name="bio" placeholder="Tell us a bit about yourself..." rows="3">{{ old('bio') }}</textarea>
                             </div>
-                            <p class="help">Write a short bio to help others understand who you are</p>
+                                @if ($errors->has('bio'))
+                                    <p class="help" style="color:red;">{{ $errors->first('bio') }}</p>
+                                @else
+                                    <p class="help">Write a short bio to help others understand who you are</p>
+                                @endif
                         </div>
 
                         <!-- Terms and Conditions -->
@@ -199,7 +211,7 @@
                     <!-- Sign In Link -->
                     <div class="has-text-centered mt-4">
                         <p class="has-text-grey">Already have an account?
-                            <a href="#" class="has-text-success">Sign in</a>
+                            <a href="{{ route('login') }}" class="has-text-success">Sign in</a>
                         </p>
                     </div>
                 </div>

@@ -63,4 +63,15 @@ class UserPolicy
     {
         return false;
     }
+
+    public function follow(User $user, User $model): bool
+    {
+        return $user->id !== $model->id;
+    }
+
+    public function unfollow(User $user, User $model): bool
+    {
+        // only unfollow if the curr user has followed the other user
+        return $user->id !== $model->id && $user->followings->contains($model);
+    }
 }

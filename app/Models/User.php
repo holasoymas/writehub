@@ -4,8 +4,10 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -19,8 +21,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'username',
-        'dob',
         'bio',
         'profile_pic',
         'email',
@@ -48,5 +48,32 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    // User I follow
+    public function followings(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_follows', // pivot table
+            'follower_id', // foreign key on pivot pointing at me
+            'followed_id', // foreign key on pivot pointing who i follow
+        )->withTimestamps();
+    }
+
+    // User who Follow me
+    public function followers(): BelongsToMany
+    {
+        return $this->belongsToMany(
+            User::class,
+            'user_follows',
+            'followed_id', // foreign key on pivot pointing at me
+            'follower_id', // foreign key on pivot pointing to my follower
+        )->withTimestamps();
+    }
+
+    public function isNotSelf(): bool
+    {
+        return Auth::check() && Auth::id() !== $this->id;
     }
 }

@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\StoreUserRequest;
 use Illuminate\Routing\Controller;
 use App\Models\User;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Log;
 
 class UserController extends Controller
 {
@@ -30,12 +32,17 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreUserRequest $request)
     {
-        $user = $request->all();
-        $crete = User::create($user);
+        $validatedUser = $request->validated();
+        Log::info($validatedUser);
 
-        Auth::login($crete);
+        // $user = $request->all();
+        $create = User::create($validatedUser);
+
+        Auth::login($create);
+
+        return to_route("user.show", ["user" => $create->id]);
     }
 
     /**
@@ -43,6 +50,10 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
+        $user = User::withCount(['followers', 'followings'])->find($user->id);
+        Log::info("User : ", $user->toArray());
+        // $user = $user->toArray();
+
         return view("user.show", compact("user"));
     }
 

@@ -232,21 +232,45 @@
                         <div class="column">
                             <h1 class="title is-2">{{ $user->name }}</h1>
                             <div class="profile-stats">
-                                <span onclick="showFollowersModal()" style="margin-right: 1rem;">12.6K followers</span>
-                                <span onclick="showFollowingModal()">248 following</span>
+                                <span onclick="showFollowersModal()" style="margin-right: 1rem;">{{ $user->followers_count }} followers</span>
+                                <span onclick="showFollowingModal()">{{ $user->followings_count }} following</span>
                             </div>
                             <p class="profile-bio">
-                                Software Engineer | JavaScript developer | Technical Writer . Work with me?
+                            {{ $user->bio }}
                             </p>
                             <div class="profile-links">
-                                <a href="#">adarshguptaworks@gmail.com</a> Connect with me?
-                                <a href="#">twitter.com/adarsh____gupta/</a>
+                                {{-- <a href="#">adarshguptaworks@gmail.com</a> Connect with me? --}}
+                                {{-- <a href="#">twitter.com/adarsh____gupta/</a> --}}
                             </div>
                         </div>
-                        <div class="column is-narrow">
-                            <button class="button is-dark is-rounded">Follow</button>
+                        @auth
+
+                            @if ($user->isNotSelf())
+                                @if (auth()->user()->followings->contains($user))
+                                    <div class="column is-narrow">
+                                      <form method="POST" action='{{ route('user.unfollow', ['user' => $user ]) }}'>
+                                          @csrf
+                                          @method("DELETE")
+                                        <button class="button is-dark is-rounded">Following</button>
+                                      </form>
+                                    </div>
+                                @else
+                                    <div class="column is-narrow">
+                                      <form method="POST" action='{{ route('user.follow', ['user' => $user ]) }}'>
+                                          @csrf
+                                        <button class="button is-dark is-rounded">Follow</button>
+                                      </form>
+                                    </div>
+                                @endif
+                            @endif
+                            @else
+                                    <div class="column is-narrow">
+                                      <form method="GET" action='{{ route('login') }}'>
+                                        <button class="button is-dark is-rounded">Follow</button>
+                                      </form>
+                                    </div>
+                        @endauth
                         </div>
-                    </div>
                 </div>
 
                 <!-- Navigation Tabs -->
