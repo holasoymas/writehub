@@ -6,217 +6,15 @@
     <title>Adarsh Gupta - Medium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .profile-avatar {
-            border-radius: 50%;
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-        }
 
-        .navbar-brand .navbar-item {
-            font-size: 1.5rem;
-            font-weight: bold;
-        }
+    <link rel="stylesheet" href="{{ asset('css/show.profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <script type="module" src="{{ asset('js/show.profile.js') }}"></script>
 
-        .profile-header {
-            padding: 2rem 0;
-        }
-
-        .profile-stats {
-            color: #6b7280;
-            font-size: 0.9rem;
-            cursor: pointer;
-        }
-
-        .profile-stats:hover {
-            color: #059669;
-        }
-
-        .profile-bio {
-            margin: 1rem 0;
-            color: #6b7280;
-        }
-
-        .profile-links a {
-            color: #059669;
-            text-decoration: none;
-        }
-
-        .profile-links a:hover {
-            text-decoration: underline;
-        }
-
-        .tabs {
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 2rem 0;
-        }
-
-        .tab-content.is-active {
-            display: block;
-        }
-
-        .article-card {
-            border-bottom: 1px solid #e5e7eb;
-            padding: 1.5rem 0;
-        }
-
-        .article-meta {
-            color: #6b7280;
-            font-size: 0.85rem;
-        }
-
-        .article-stats {
-            color: #6b7280;
-            font-size: 0.85rem;
-        }
-
-        .article-image {
-            width: 100px;
-            height: 100px;
-            object-fit: cover;
-            border-radius: 4px;
-        }
-
-        .following-card {
-            padding: 1rem;
-            border-radius: 8px;
-            border: 1px solid #e5e7eb;
-            margin-bottom: 1rem;
-        }
-
-        .following-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .write-btn {
-            background-color: #059669;
-            color: white;
-            border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
-
-        .write-btn:hover {
-            background-color: #047857;
-            color: white;
-        }
-
-        .sidebar {
-            position: sticky;
-            top: 2rem;
-        }
-
-        .empty-state {
-            text-align: center;
-            padding: 3rem 1rem;
-            color: #6b7280;
-        }
-
-        .empty-state i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            opacity: 0.5;
-        }
-
-        .footer {
-            background-color: #fafafa;
-            border-top: 1px solid #e5e7eb;
-            margin-top: 4rem;
-            padding: 3rem 0;
-        }
-
-        .footer-links {
-            color: #6b7280;
-            font-size: 0.9rem;
-        }
-
-        .footer-links a {
-            color: #6b7280;
-            text-decoration: none;
-            margin-right: 1rem;
-        }
-
-        .footer-links a:hover {
-            color: #059669;
-        }
-
-        @media (max-width: 768px) {
-            .profile-header {
-                text-align: center;
-            }
-
-            .article-image {
-                width: 80px;
-                height: 80px;
-            }
-
-            .sidebar {
-                position: static;
-                margin-top: 2rem;
-            }
-
-            .columns.is-desktop {
-                display: block;
-            }
-        }
-
-        .modal-card {
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-    </style>
 </head>
 <body>
-    <!-- Navigation -->
-    <nav class="navbar is-white" role="navigation">
-        <div class="container">
-            <div class="navbar-brand">
-                <a class="navbar-item" href="#">
-                   WriteHub
-                </a>
-                <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                    <span aria-hidden="true"></span>
-                </a>
-            </div>
-            <div id="navbarMenu" class="navbar-menu">
-                <div class="navbar-start">
-                    <div class="navbar-item">
-                        <div class="field has-addons">
-                            <div class="control has-icons-left">
-                                <input class="input" type="text" placeholder="Search">
-                                <span class="icon is-left">
-                                    <i class="fas fa-search"></i>
-                                </span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="navbar-end">
-                    <div class="navbar-item">
-                        <a href="#" class="write-btn">
-                            <i class="fas fa-pen"></i> Write
-                        </a>
-                    </div>
-                    <div class="navbar-item">
-                        <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=100&h=100&fit=crop&crop=face"
-                             alt="Profile" class="profile-avatar" style="width: 32px; height: 32px;">
-                    </div>
-                </div>
-            </div>
-        </div>
-    </nav>
+    <!-- Navigation / navbar -->
+    <x-navbar />
 
     <div class="container">
         <div class="columns is-desktop">
@@ -226,14 +24,14 @@
                 <div class="profile-header">
                     <div class="columns is-vcentered">
                         <div class="column is-narrow">
-                            <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&h=200&fit=crop&crop=face"
+                            <img src=" {{ $user->profile_pic }}"
                                  alt="Adarsh Gupta" class="profile-avatar">
                         </div>
                         <div class="column">
                             <h1 class="title is-2">{{ $user->name }}</h1>
                             <div class="profile-stats">
-                                <span onclick="showFollowersModal()" style="margin-right: 1rem;">{{ $user->followers_count }} followers</span>
-                                <span onclick="showFollowingModal()">{{ $user->followings_count }} following</span>
+                                <span id="show-followers" style="margin-right: 1rem;">{{ $user->followers_count }} followers</span>
+                                <span id="show-followings">{{ $user->followings_count }} following</span>
                             </div>
                             <p class="profile-bio">
                             {{ $user->bio }}
@@ -445,11 +243,11 @@
 
     <!-- Followers Modal -->
     <div id="followersModal" class="modal">
-        <div class="modal-background" onclick="closeModal('followersModal')"></div>
+        <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">Followers</p>
-                <button class="delete" onclick="closeModal('followersModal')"></button>
+                <button id="followers-close-btn" class="delete"></button>
             </header>
             <section class="modal-card-body" id="followersContent">
                 <!-- Followers content will be loaded here -->
@@ -459,11 +257,11 @@
 
     <!-- Following Modal -->
     <div id="followingModal" class="modal">
-        <div class="modal-background" onclick="closeModal('followingModal')"></div>
+        <div class="modal-background"></div>
         <div class="modal-card">
             <header class="modal-card-head">
                 <p class="modal-card-title">Following</p>
-                <button class="delete" onclick="closeModal('followingModal')"></button>
+                <button id="following-close-btn" class="delete"></button>
             </header>
             <section class="modal-card-body" id="followingContent">
                 <!-- Following content will be loaded here -->
@@ -472,133 +270,9 @@
     </div>
 
     <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="columns">
-                <div class="column is-6">
-                    <h5 class="title is-5">Medium</h5>
-                    <p class="has-text-grey">A place to read, write, and deepen your understanding</p>
-                </div>
-                <div class="column is-6">
-                    <div class="footer-links">
-                        <a href="#">About</a>
-                        <a href="#">Write</a>
-                        <a href="#">Help</a>
-                        <a href="#">Legal</a>
-                        <a href="#">Privacy</a>
-                        <a href="#">Terms</a>
-                    </div>
-                </div>
-            </div>
-            <hr>
-            <div class="has-text-centered has-text-grey">
-                <p>&copy; 2024 Medium. All rights reserved.</p>
-            </div>
-        </div>
-    </footer>
+    <x-footer />
 
     <script>
-        // Mobile menu toggle
-        document.addEventListener('DOMContentLoaded', () => {
-            const $navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
-
-            if ($navbarBurgers.length > 0) {
-                $navbarBurgers.forEach(el => {
-                    el.addEventListener('click', () => {
-                        const target = el.dataset.target;
-                        const $target = document.getElementById(target);
-
-                        el.classList.toggle('is-active');
-                        $target.classList.toggle('is-active');
-                    });
-                });
-            }
-        });
-
-        // Tab switching functionality
-        function switchTab(tabName) {
-            // Hide all tab contents
-            const tabContents = document.querySelectorAll('.tab-content');
-            tabContents.forEach(content => {
-                content.classList.remove('is-active');
-            });
-
-            // Remove active class from all tabs
-            const tabs = document.querySelectorAll('.tabs li');
-            tabs.forEach(tab => {
-                tab.classList.remove('is-active');
-            });
-
-            // Show selected tab content
-            document.getElementById(tabName + '-content').classList.add('is-active');
-
-            // Add active class to selected tab
-            document.querySelector(`[data-tab="${tabName}"]`).classList.add('is-active');
-        }
-
-        // Modal functions
-        function showFollowersModal() {
-            const modal = document.getElementById('followersModal');
-            const content = document.getElementById('followersContent');
-
-            // Sample followers data
-            const followers = [
-                { name: 'Sarah Johnson', bio: 'UX Designer & Writer', avatar: 'https://images.unsplash.com/photo-1494790108755-2616b6df47c6?w=100&h=100&fit=crop&crop=face' },
-                { name: 'Mike Chen', bio: 'Frontend Developer', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face' },
-                { name: 'Emily Davis', bio: 'Product Manager', avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&h=100&fit=crop&crop=face' },
-                { name: 'Alex Rodriguez', bio: 'Data Scientist', avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face' }
-            ];
-
-            content.innerHTML = followers.map(follower => `
-                <div class="media">
-                    <div class="media-left">
-                        <img src="${follower.avatar}" alt="${follower.name}" class="following-avatar">
-                    </div>
-                    <div class="media-content">
-                        <p class="has-text-weight-semibold">${follower.name}</p>
-                        <p class="is-size-7 has-text-grey">${follower.bio}</p>
-                    </div>
-                    <div class="media-right">
-                        <button class="button is-small is-outlined">Follow back</button>
-                    </div>
-                </div>
-            `).join('');
-
-            modal.classList.add('is-active');
-        }
-
-        function showFollowingModal() {
-            const modal = document.getElementById('followingModal');
-            const content = document.getElementById('followingContent');
-
-            // Sample following data
-            const following = [
-                { name: 'Code Like A Girl', bio: 'Empowering women in tech', avatar: 'https://images.unsplash.com/photo-1494790108755-2616b6df47c6?w=100&h=100&fit=crop&crop=face' },
-                { name: 'Better Humans', bio: 'Better Living Through Technology', avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face' },
-                { name: 'Let\'s Code Future', bio: 'Programming tutorials and tips', avatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=100&h=100&fit=crop&crop=face' }
-            ];
-
-            content.innerHTML = following.map(user => `
-                <div class="media">
-                    <div class="media-left">
-                        <img src="${user.avatar}" alt="${user.name}" class="following-avatar">
-                    </div>
-                    <div class="media-content">
-                        <p class="has-text-weight-semibold">${user.name}</p>
-                        <p class="is-size-7 has-text-grey">${user.bio}</p>
-                    </div>
-                    <div class="media-right">
-                        <button class="button is-small is-danger is-outlined">Unfollow</button>
-                    </div>
-                </div>
-            `).join('');
-
-            modal.classList.add('is-active');
-        }
-
-        function closeModal(modalId) {
-            document.getElementById(modalId).classList.remove('is-active');
-        }
-    </script>
+         </script>
 </body>
 </html>

@@ -6,80 +6,9 @@
     <title>Sign Up - Medium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        .hero.is-fullheight {
-            min-height: 100vh;
-            background-color: #fafafa;
-        }
 
-        .profile-pic-container {
-            position: relative;
-            display: inline-block;
-        }
+    <link rel="stylesheet" href="{{ asset('css/signup.css') }}">
 
-        .profile-preview {
-            width: 120px;
-            height: 120px;
-            object-fit: cover;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 3px solid #e5e7eb;
-        }
-
-        .upload-button {
-            position: absolute;
-            bottom: 0;
-            right: 0;
-            background: #059669;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
-
-        .upload-button i {
-            color: white;
-            font-size: 0.8rem;
-        }
-
-        .signup-box {
-            max-width: 500px;
-            width: 100%;
-            margin: 0 auto;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .social-btn {
-            width: 100%;
-            justify-content: flex-start;
-        }
-
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            color: #6b7280;
-            margin: 1.5rem 0;
-        }
-
-        .divider::before,
-        .divider::after {
-            content: "";
-            flex: 1;
-            border-bottom: 1px solid #e5e7eb;
-        }
-
-        .divider::before {
-            margin-right: 1rem;
-        }
-
-        .divider::after {
-            margin-left: 1rem;
-        }
-    </style>
 </head>
 <body>
     <section class="hero is-fullheight">
@@ -116,20 +45,24 @@
                     <div class="divider">or</div>
 
                     <!-- Registration Form -->
-                    <form id="registerForm" method="POST" action="{{ route('user.store') }}">
+                    <form id="registerForm" method="POST" action="{{ route('user.store') }}" enctype="multipart/form-data">
                     @csrf
                         <!-- Profile Picture Upload -->
                         <div class="field has-text-centered mb-5">
                             <div class="control">
                                 <div class="profile-pic-container">
-                                    <img id="profilePreview" src="https://picsum.photos/200/300"
+                                    <img id="profilePreview" src="https://media.istockphoto.com/id/1223671392/vector/default-profile-picture-avatar-photo-placeholder-vector-illustration.jpg?s=612x612&w=0&k=20&c=s0aTdmT5aU6b8ot7VKm11DeID6NctRCpB755rA1BIP0="
                                          alt="Profile Picture" class="profile-preview">
                                     <div class="upload-button" onclick="document.getElementById('profilePicInput').click()">
                                         <i class="fas fa-camera"></i>
                                     </div>
                                 </div>
-                                <input type="file" id="profilePicInput" accept="image/*" style="display: none;">
-                                <p class="help has-text-grey mt-2">Click to upload your profile picture</p>
+                                <input type="file" name="user_pic" id="profilePicInput" accept="image/*" style="display: none;">
+                                @if ($errors->has('profile_pic'))
+                                    <p class="help mt-2 has-text-danger"> {{ $errors->first('profile_pic') }} </p>
+                                @else
+                                   <p class="help has-text-grey mt-2">Click to upload your profile picture</p>
+                                @endif
                             </div>
                         </div>
 
@@ -143,7 +76,7 @@
                                 </span>
                             </div>
                             @error('name')
-                            <p class="help" style="color:red;">{{ $message }} </p>
+                            <p class="help has-text-danger">{{ $message }} </p>
                             @enderror
                         </div>
 
@@ -157,7 +90,7 @@
                                 </span>
                             </div>
                             @error('email')
-                                <p class="help" style="color: red;">{{ $message }}</p>
+                                <p class="help has-text-danger">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -171,7 +104,7 @@
                                 </span>
                             </div>
                             @error('password')
-                                 <p class="help" style="color: red;">{{ $message }}</p>
+                                 <p class="help has-text-danger">{{ $message }}</p>
                             @enderror
                         </div>
 
@@ -182,7 +115,7 @@
                                 <textarea class="textarea" name="bio" placeholder="Tell us a bit about yourself..." rows="3">{{ old('bio') }}</textarea>
                             </div>
                                 @if ($errors->has('bio'))
-                                    <p class="help" style="color:red;">{{ $errors->first('bio') }}</p>
+                                    <p class="help has-text-danger">{{ $errors->first('bio') }}</p>
                                 @else
                                     <p class="help">Write a short bio to help others understand who you are</p>
                                 @endif
@@ -231,12 +164,6 @@
                 reader.readAsDataURL(file);
             }
         });
-
-        // Form submission
-        {{-- document.getElementById('registerForm').addEventListener('submit', function(e) { --}}
-        {{--     e.preventDefault(); --}}
-        {{--     alert('Registration successful! (This is just a demo)'); --}}
-        {{-- }); --}}
     </script>
 </body>
 </html>
