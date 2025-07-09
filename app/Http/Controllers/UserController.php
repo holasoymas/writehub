@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreUserRequest;
 use Illuminate\Routing\Controller;
 use App\Models\User;
+use Cloudinary\Cloudinary;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -35,7 +36,22 @@ class UserController extends Controller
     public function store(StoreUserRequest $request)
     {
         $validatedUser = $request->validated();
-        Log::info($validatedUser);
+
+        if ($request->hasFile('user_pic')) {
+
+            $cloudinary = new Cloudinary();
+
+            $upload = $cloudinary->uploadApi()->upload(
+
+                $request->file('user_pic')->getRealPath(),
+
+                ['folder' => 'user_profiles'] // folder in cloudinary
+
+            );
+
+            $validatedUser['profile_pic'] = $upload['secure_url'];
+            // $validatedUser['public_id'] =  $upload['public_id'];
+        }
 
         // $user = $request->all();
         $create = User::create($validatedUser);
@@ -51,6 +67,7 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user = User::withCount(['followers', 'followings'])->find($user->id);
+
         Log::info("User : ", $user->toArray());
         // $user = $user->toArray();
 
@@ -63,6 +80,7 @@ class UserController extends Controller
     public function edit(User $user)
     {
         $this->authorize('update', $user);
+
         return view("user.edit", compact("user"));
     }
 
@@ -72,6 +90,7 @@ class UserController extends Controller
     public function update(Request $request, User $user)
     {
         if ($user->update($request->all())) {
+
             redirect("/");
         }
     }
