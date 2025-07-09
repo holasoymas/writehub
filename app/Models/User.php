@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
+use phpDocumentor\Reflection\Types\This;
 
 class User extends Authenticatable
 {
@@ -75,5 +76,12 @@ class User extends Authenticatable
     public function isNotSelf(): bool
     {
         return Auth::check() && Auth::id() !== $this->id;
+    }
+
+    // Accessor for profile_pic incase of null , so fallback to defaul url
+    public function getProfilePicAttribute()
+    {
+        return $this->attributes['profile_pic'] ??
+            "https://res.cloudinary.com/dgy9djne0/image/upload/v1751614201/avatar_jlzpqv.jpg";
     }
 }

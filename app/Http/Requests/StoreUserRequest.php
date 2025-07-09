@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rules\File;
 use Illuminate\Validation\Rules\Password;
 
 class StoreUserRequest extends FormRequest
@@ -27,6 +28,7 @@ class StoreUserRequest extends FormRequest
             'email' => ['required', 'email:rfc,dns'],
             'password' => ['required', Password::min(6)],
             'bio' => 'max:50',
+            'profile_pic' => [File::image()->max('1mb')]
         ];
     }
 }
