@@ -5,10 +5,10 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Auth;
-use phpDocumentor\Reflection\Types\This;
 
 class User extends Authenticatable
 {
@@ -83,5 +83,15 @@ class User extends Authenticatable
     {
         return $this->attributes['profile_pic'] ??
             "https://res.cloudinary.com/dgy9djne0/image/upload/v1751614201/avatar_jlzpqv.jpg";
+    }
+
+    /* ------------------------------------------------
+    *             FOR POSTS
+    * ------------------------------------------------
+    */
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
     }
 }
