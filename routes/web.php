@@ -30,7 +30,7 @@ Route::middleware(["auth"])->group(function () {
 });
 
 // use it at last to prevent route shadowing
-Route::get('posts/{id}', [PostController::class, 'show'])->name('posts.show');
+Route::get('posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
 Route::post('posts/uploadImage', [PostController::class, 'uploadImage'])->name('uploadImage');
 Route::post('posts/ploadImageUrl', [PostController::class, 'ploadImageUrl'])->name('uploadImageUrl');
