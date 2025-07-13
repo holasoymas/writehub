@@ -2,8 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Post;
+use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Str;
+use Illuminate\Validation\Rules\File;
 
 class PostController extends Controller
 {
@@ -18,15 +23,26 @@ class PostController extends Controller
     public function uploadImage(Request $request)
     {
         Log::info($request->all());
-        // $request->validate([
-        //     'image' => 'image|max:2mb',
-        // ]);
+        $request->validate([
+            'image' => [File::image()->max('2mb')],
+        ]);
 
         if ($request->hasFile('image')) {
+
+            $cloudinary = new Cloudinary();
+
+            $upload = $cloudinary->uploadApi()->upload(
+
+                $request->file('image')->getRealPath(),
+
+                ['folder' => 'post_images']
+            );
+
             return response()->json([
                 'success' => 1,
                 'file' => [
-                    'url' => "https://imgs.search.brave.com/CgKD821br3UO1oO9Mwqi9TGgCklQfqoa5DfM0E0xTiE/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly91cGxv/YWQud2lraW1lZGlh/Lm9yZy93aWtpcGVk/aWEvY29tbW9ucy9i/L2I2L1BlbmNpbF9k/cmF3aW5nX29mX2Ff/Z2lybF9pbl9lY3N0/YXN5LmpwZw"
+                    'url' => $upload['secure_url'],
+                    'public_id' => $upload['public_id'],
                 ]
             ]);
         }
@@ -61,15 +77,38 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        return response(['msg' => 'Data send'], 200);
+        $content = $request->all();
+
+        // strip_tags remove the html tags
+        $header = strip_tags($content["content"]["blocks"][0]["data"]["text"]);
+        Log::info($header);
+        Log::info($content["content"]["blocks"]);
+        Log::info(json_encode($content["content"]["blocks"]));
+
+        $post = new Post();
+        $post->user_id = Auth::id();
+        $post->title = $header;
+        $post->content = json_encode($content["content"]["blocks"]);
+        $post->slug = Str::slug($header);
+        $post->save();
+
+
+        return response()->json([
+            'redirect_url' => route('posts.show', ['slug' => $post->slug]),
+            'message' => 'Post created successfully!'
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $slug)
     {
-        //
+        $post = Post::with('user')->where('slug', $slug)->firstOrFail();
+
+        $post->content = json_decode($post->content); // object (or use `true` for array)
+
+        return view('posts.show', compact("post"));
     }
 
     /**
