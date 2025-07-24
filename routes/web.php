@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFollowController;
@@ -27,6 +28,8 @@ Route::middleware(["auth"])->group(function () {
     Route::delete('/unfollow/{user}', [UserFollowController::class, 'unfollow'])->name('user.unfollow');
 
     Route::resource('posts', PostController::class)->except(['show']);
+
+    Route::post('/comment/create', [CommentController::class, "create"]);
 });
 
 // use it at last to prevent route shadowing

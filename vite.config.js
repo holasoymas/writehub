@@ -7,6 +7,7 @@ const frontendFiles = [
     'resources/js/app.js',
     'resources/js/createPost.js',
     'resources/js/renderPost.js',
+    'resources/js/renderComment.js',
 ]
 
 export default defineConfig({
