@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!comment.trim()) return;
 
         try {
-            const res = await axios.post("http://127.0.0.1:8000/comment/create", {
+            const res = await axios.post("/comment/create", {
                 parentId: null,
                 postId,
                 comment
@@ -119,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             try {
 
-                const res = await axios.post("http://127.0.0.1:8000/comment/create", { parentId, postId, comment });
+                const res = await axios.post("/comment/create", { parentId, postId, comment });
                 console.log(res);
 
                 const parentElement = document.querySelector(`[data-comment-id="${parentId}"]`);
