@@ -1,0 +1,281 @@
+/* Target nested lists inside #output or .post-content */
+
+ul {
+    list-style-type: disc;
+    padding-left: 1.5rem;
+}
+
+ol {
+    list-style-type: decimal;
+    padding-left: 1.5rem;
+}
+
+/* Optional: Indent nested lists more clearly */
+li>ol,
+li>ul {
+    margin-top: 0.3rem;
+    padding-left: 1.5rem;
+}
+
+.quote-block {
+    border-left: 4px solid #1a8917;
+    padding-left: 1rem;
+    margin: 2rem 0;
+    font-style: italic;
+    background-color: #f9f9f9;
+    padding: 1rem 1.5rem;
+    border-radius: 6px;
+    position: relative;
+}
+
+.quote-block blockquote {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.quote-block figcaption {
+    margin-top: 0.5rem;
+    font-size: 0.95rem;
+    font-style: normal;
+    color: #555;
+    text-align: right;
+}
+
+.quote-block blockquote::before {
+    content: "“";
+}
+
+.quote-block blockquote::after {
+    content: "”";
+}
+
+.medium-container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.title {
+    margin-top: 15px;
+}
+
+.author-section {
+    display: flex;
+    align-items: center;
+    margin: 32px 0;
+    padding-bottom: 24px;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.author-avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    margin-right: 16px;
+}
+
+.author-info h4 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: 500;
+    color: #242424;
+}
+
+.author-meta {
+    font-size: 14px;
+    color: #6b6b6b;
+    margin-top: 4px;
+}
+
+.follow-btn {
+    margin-left: auto;
+    background: none;
+    border: 1px solid #1a8917;
+    color: #1a8917;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.follow-btn:hover {
+    background: #1a8917;
+    color: white;
+}
+
+.post-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 32px 0;
+    padding: 16px 0;
+    border-top: 1px solid #f2f2f2;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.action-left {
+    display: flex;
+    align-items: center;
+    gap: 32px;
+}
+
+.action-btn {
+    background: none;
+    border: none;
+    color: #6b6b6b;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.action-btn:hover {
+    color: #242424;
+}
+
+.action-btn i {
+    font-size: 20px;
+}
+
+.post-content {
+    font-size: 16.5px;
+    line-height: 1.6;
+    margin: 32px 0;
+}
+
+.post-content h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 48px 0 16px 0;
+    color: #242424;
+}
+
+.post-content h3 {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 32px 0 16px 0;
+    color: #242424;
+}
+
+.post-content p {
+    margin-bottom: 24px;
+    color: #242424;
+}
+
+.post-content ul,
+.post-content ol {
+    margin: 24px 0;
+    padding-left: 24px;
+}
+
+.post-content li {
+    margin-bottom: 8px;
+}
+
+.post-image {
+    margin: 48px 0;
+    text-align: center;
+}
+
+.post-image img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+}
+
+.post-image figcaption {
+    font-size: 14px;
+    color: #6b6b6b;
+    margin-top: 12px;
+    text-align: center;
+}
+
+.highlight-box {
+    background: #f0f8ff;
+    border-left: 4px solid #3273dc;
+    padding: 20px;
+    font-style: italic;
+    margin: 32px 0;
+    border-radius: 4px;
+}
+
+.author-card {
+    /* background: #f8f9fa; */
+    background-color: #e9ecef;
+    border-radius: 8px;
+    padding: 24px;
+    margin: 48px 0;
+}
+
+.author-card-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.author-card-avatar {
+    width: 54px;
+    height: 54px;
+    border-radius: 50%;
+    margin-right: 16px;
+}
+
+.author-card-info h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #242424;
+}
+
+.author-card-meta {
+    font-size: 14px;
+    color: #6b6b6b;
+    margin-top: 4px;
+}
+
+.author-card-bio {
+    font-size: 16px;
+    color: #6b6b6b;
+    margin-bottom: 16px;
+}
+
+code {
+    border: none;
+}
+
+pre {
+    border: none;
+    border-radius: 4px;
+    padding: 8px;
+    overflow-x: auto;
+}
+
+.no-responses {
+    text-align: center;
+    color: #6b6b6b;
+    font-size: 16px;
+    margin: 48px 0;
+}
+
+@media (max-width: 768px) {
+    .medium-container {
+        padding: 0 16px;
+    }
+
+    .post-title {
+        font-size: 28px;
+    }
+
+    .post-content {
+        font-size: 14.5px;
+    }
+
+    .action-left {
+        gap: 24px;
+    }
+}
