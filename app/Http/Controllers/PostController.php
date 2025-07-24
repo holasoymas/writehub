@@ -104,7 +104,26 @@ class PostController extends Controller
      */
     public function show(string $slug)
     {
-        $post = Post::with('user')->where('slug', $slug)->firstOrFail();
+        /*-----------------------
+        * this method fetch all the comments , comments with reply also
+        * and reply as a top level also requesting redundent data
+        ------------------------
+        */
+        // $post = Post::with('user', 'comments.recursiveReplies')->where('slug', $slug)->firstOrFail();
+
+        // ----------------------------------------------------------------------------------------------
+
+        /*
+         ------------------------------------------------
+        // optimized query only fetch top level comments and their replies in recursive
+        ------------------------------------------------
+        */
+        $post = Post::with([
+            'user',
+            'comments' => function ($q) {
+                $q->whereNull('parent_id')->with('recursiveReplies');
+            }
+        ])->where('slug', $slug)->firstOrFail();
 
         $post->content = json_decode($post->content); // object (or use `true` for array)
 
