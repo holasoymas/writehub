@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFollowController;
@@ -30,6 +31,8 @@ Route::middleware(["auth"])->group(function () {
     Route::resource('posts', PostController::class)->except(['show']);
 
     Route::post('/comment/create', [CommentController::class, "create"]);
+
+    Route::post('/like', [LikeController::class, 'toggleLike']);
 });
 
 // use it at last to prevent route shadowing

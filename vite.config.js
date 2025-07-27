@@ -8,6 +8,7 @@ const frontendFiles = [
     'resources/js/createPost.js',
     'resources/js/renderPost.js',
     'resources/js/renderComment.js',
+    'resources/js/likes.js',
 ]
 
 export default defineConfig({
