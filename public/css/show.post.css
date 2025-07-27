@@ -141,6 +141,11 @@ li>ul {
     font-size: 20px;
 }
 
+.action-btn.like.liked i,
+.comment-action.like-btn.liked i {
+    color: #1A8917;
+}
+
 .post-content {
     font-size: 16.5px;
     line-height: 1.6;

@@ -186,7 +186,7 @@ function renderComments(comments, parentElement, clearDom = true) {
 
         commentDiv.innerHTML = `
                     <img src="https://placehold.co/400" alt="${'pic'}" class="comment-avatar">
-                    <div class="comment-content">
+                    <div class="comment-content" data-likable-id='${comment.id}' data-likable-type='Comment'>
                         <div class="comment-header">
                             <span class="comment-author">${"ram"}</span>
                             <span class="comment-time">${comment.created_at}</span>
@@ -195,9 +195,9 @@ function renderComments(comments, parentElement, clearDom = true) {
                             ${comment.body}
                         </div>
                         <div class="comment-actions">
-                            <button class="comment-action like-btn" onclick="toggleCommentLike(this)">
-                                <i class="far fa-heart"></i>
-                                <span>12</span>
+                            <button class="comment-action like-btn ${comment.is_liked ? 'liked' : ''}">
+                                <i class="fa-solid fa-hands-clapping"></i>
+                                <span>${comment.likes_count}</span>
                             </button>
                             <button class="comment-action reply-btn">
                                 <i class="fas fa-reply"></i>
