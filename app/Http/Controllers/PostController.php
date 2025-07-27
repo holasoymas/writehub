@@ -120,12 +120,29 @@ class PostController extends Controller
         */
         $post = Post::with([
             'user',
+            'likes',
             'comments' => function ($q) {
-                $q->whereNull('parent_id')->with('recursiveReplies');
+                $q->whereNull('parent_id')->with([
+                    'likes',                   // eager load likes on top-level comments
+                    'recursiveReplies.likes'  // eager load likes on replies recursively
+                ]);
             }
         ])->where('slug', $slug)->firstOrFail();
 
+        Log::info($post);
         $post->content = json_decode($post->content); // object (or use `true` for array)
+
+        $authUser = Auth::user();
+        $authUserId = Auth::id();
+
+        // Enrich posts with likes (compute using prepolute data to avoid lazy fetching)
+        $post->is_liked = $post->likes->contains('user_id', $authUserId);
+        $post->likes_count = $post->likes->count();
+
+        // Enrich comments recursively
+        foreach ($post->comments as $comment) {
+            $this->attachLikeMeta($comment);
+        }
 
         return view('posts.show', compact("post"));
     }
@@ -152,5 +169,19 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    private function attachLikeMeta($comment)
+    {
+        $userId = Auth::id();
+
+        $comment->is_liked = $comment->likes->contains('user_id', $userId);
+        $comment->likes_count = $comment->likes->count();
+
+        if ($comment->relationLoaded('recursiveReplies')) {
+            foreach ($comment->recursiveReplies as $reply) {
+                $this->attachLikeMeta($reply);
+            }
+        }
     }
 }
