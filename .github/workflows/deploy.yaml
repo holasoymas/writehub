@@ -1,0 +1,23 @@
+# yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
+# HEROKU_API_KEY
+name: Deploy to heroku
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy: # name of the job
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3 # action to copy our sorce code into that code runner environment
+
+      - name: Install heroku cli
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Verify heroku installation
+        run: |
+          which heroku
+          heroku --version
