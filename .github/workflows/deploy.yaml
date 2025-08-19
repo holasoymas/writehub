@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=https://json.schemastore.org/github-workflow.json
-# HEROKU_API_KEY
+
 name: Deploy to heroku
 
 on:
@@ -21,3 +21,14 @@ jobs:
         run: |
           which heroku
           heroku --version
+
+      - name: Add heroku remote
+        run: |
+          heroku git:remote -a writehub
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      - name: Deploy to heroku
+        run: git push heroku main
+        env:
+          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
