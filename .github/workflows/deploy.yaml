@@ -14,21 +14,27 @@ jobs:
     steps:
       - uses: actions/checkout@v3 # action to copy our sorce code into that code runner environment
 
-      - name: Install heroku cli
-        run: curl https://cli-assets.heroku.com/install.sh | sh
+      - uses: akhileshns/heroku-deploy@v3.12.12 # This action deploys the content on Heroku
+        with:
+          heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
+          heroku_app_name: "writehub"
+          heroku_email: ${{ secrets.HEROKU_EMAIL }}
 
-      - name: Verify heroku installation
-        run: |
-          which heroku
-          heroku --version
+      # - name: Install heroku cli
+        # run: curl https://cli-assets.heroku.com/install.sh | sh
 
-      - name: Add heroku remote
-        run: |
-          heroku git:remote -a writehub
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      # - name: Verify heroku installation
+        # run: |
+          # which heroku
+          # heroku --version
 
-      - name: Deploy to heroku
-        run: git push heroku main
-        env:
-          HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+      # - name: Add heroku remote
+        # run: |
+          # heroku git:remote -a writehub
+        # env:
+          # HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
+
+      # - name: Deploy to heroku
+        # run: git push heroku main
+        # env:
+          # HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
