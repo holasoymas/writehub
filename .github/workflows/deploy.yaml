@@ -14,19 +14,21 @@ jobs:
     steps:
       - uses: actions/checkout@v3 # action to copy our sorce code into that code runner environment
 
-      - uses: akhileshns/heroku-deploy@v3.12.12 # This action deploys the content on Heroku
+      - name: Install heroku cli
+        run: curl https://cli-assets.heroku.com/install.sh | sh
+
+      - name: Verify heroku installation
+        run: |
+          which heroku
+          heroku --version
+
+      - uses: akhileshns/heroku-deploy@v3.14.15 # This action deploys the content on Heroku
         with:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "writehub"
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
 
-      # - name: Install heroku cli
-        # run: curl https://cli-assets.heroku.com/install.sh | sh
 
-      # - name: Verify heroku installation
-        # run: |
-          # which heroku
-          # heroku --version
 
       # - name: Add heroku remote
         # run: |
