@@ -27,16 +27,3 @@ jobs:
           heroku_api_key: ${{ secrets.HEROKU_API_KEY }}
           heroku_app_name: "writehub"
           heroku_email: ${{ secrets.HEROKU_EMAIL }}
-
-
-
-      # - name: Add heroku remote
-        # run: |
-          # heroku git:remote -a writehub
-        # env:
-          # HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
-
-      # - name: Deploy to heroku
-        # run: git push heroku main
-        # env:
-          # HEROKU_API_KEY: ${{ secrets.HEROKU_API_KEY }}
