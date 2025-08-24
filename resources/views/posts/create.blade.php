@@ -8,6 +8,7 @@
   <title>Editor.js Demo</title>
 
   <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/tags.css') }}">
   {{-- <script type="module" src="{{ asset('js/editorConfig.js') }}"></script> --}}
 
   @vite(['resources/js/createPost.js'])
@@ -45,9 +46,28 @@
 
 <body>
   <div id="editorjs"></div>
-  <button id="save">Save</button>
+  {{-- <button id="save">Save</button> --}}
 
-  <div id="output">
-  </div>
+
+<form class="tag-form">
+        <div class="form-group">
+            <label for="tagInput">Tags</label>
+            <div class="tag-input-container" id="tagContainer">
+                <input type="text" id="tagInput" placeholder="Add up to 5 tags..." maxlength="20">
+            </div>
+            <div class="tag-info">
+                <div class="help-text">Press Enter to add a tag. No spaces allowed.</div>
+                <div class="tag-counter" id="tagCounter">0/5</div>
+            </div>
+            <div class="error-text" id="errorText"></div>
+        </div>
+
+        <div class="submit-section">
+            <button type="button" class="submit-btn" id="save">
+                Publish Article
+            </button>
+        </div>
+    </form>
+
 </body>
 </html>
