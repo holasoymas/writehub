@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('post_save', function (Blueprint $table) {
+        Schema::create('bookmarks', function (Blueprint $table) {
             $table->primary(['user_id', 'post_id']);
 
             $table->foreignId('user_id')->constrained()->cascadeOnDelete();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('post_save');
+        Schema::dropIfExists('bookmarks');
     }
 };
