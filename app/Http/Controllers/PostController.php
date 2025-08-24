@@ -79,6 +79,7 @@ class PostController extends Controller
     {
         $content = $request->all();
 
+        $tags = $content["tags"];
         // strip_tags remove the html tags
         $header = strip_tags($content["content"]["blocks"][0]["data"]["text"]);
         Log::info($header);
@@ -92,6 +93,14 @@ class PostController extends Controller
         $post->slug = Str::slug($header);
         $post->save();
 
+        $tagIds = [];
+        foreach ($tags as $tag) {
+            $tag = \App\Models\Tag::firstOrCreate(['name' => $tag]);
+            $tagIds[] = $tag->id;
+        }
+
+        // for attaching tags and detaching old ones
+        $post->tags()->sync($tagIds);
 
         return response()->json([
             'redirect_url' => route('posts.show', ['slug' => $post->slug]),
@@ -121,13 +130,17 @@ class PostController extends Controller
         $post = Post::with([
             'user',
             'likes',
+            'tags',
             'comments' => function ($q) {
                 $q->whereNull('parent_id')->with([
                     'likes',                   // eager load likes on top-level comments
                     'recursiveReplies.likes'  // eager load likes on replies recursively
                 ]);
             }
-        ])->where('slug', $slug)->firstOrFail();
+        ])
+            ->withCount('comments')
+            ->where('slug', $slug)
+            ->firstOrFail();
 
         Log::info($post);
         $post->content = json_decode($post->content); // object (or use `true` for array)

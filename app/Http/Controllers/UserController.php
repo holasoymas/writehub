@@ -66,7 +66,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        $user = User::withCount(['followers', 'followings'])->find($user->id);
+        $user = User::with([
+            'posts.tags',
+            'posts' => function ($query) {
+                $query->withCount(['likes', 'comments']);
+            }
+        ])
+            ->withCount(['followers', 'followings'])->find($user->id);
 
         Log::info("User : ", $user->toArray());
         // $user = $user->toArray();
