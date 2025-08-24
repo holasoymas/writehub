@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
 
 Route::get('login', [LoginController::class, "create"])->name("login");
 Route::post('login', [LoginController::class, "store"])->name("login.store");
@@ -33,6 +34,8 @@ Route::middleware(["auth"])->group(function () {
     Route::post('/comment/create', [CommentController::class, "create"]);
 
     Route::post('/like', [LikeController::class, 'toggleLike']);
+
+    Route::post('/bookmark', [BookmarkController::class, 'toggleBookMark']);
 });
 
 // use it at last to prevent route shadowing
