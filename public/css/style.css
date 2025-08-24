@@ -7,3 +7,19 @@ body {
     font-optical-sizing: auto;
     font-style: normal;
 }
+
+.action-btn i {
+    color: inherit;
+    transition: color 0.2s ease-in-out;
+}
+
+.action-btn.active i {
+    color: #1A8917;
+}
+
+/* Change to solid icon when active */
+.action-btn.active i:before {
+    content: "\f02e";
+    /* Unicode for fas fa-bookmark */
+    font-weight: 900;
+}

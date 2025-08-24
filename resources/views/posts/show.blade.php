@@ -7,6 +7,7 @@
     <title>Reading Images In Laravel Using Image Intervention 3 - Medium</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/show.post.css') }}">
     <link rel="stylesheet" href="{{ asset('css/show.profile.css') }}">
     <link rel="stylesheet" href="{{ asset('css/comments.css') }}">
@@ -20,8 +21,12 @@
 @vite(['resources/js/renderPost.js'])
 @vite(['resources/js/renderComment.js'])
 @vite(['resources/js/likes.js'])
+@vite(['resources/js/bookmark.js'])
 
-<script>hljs.highlightAll();</script>
+<script>hljs.highlightAll();
+const post = @json($post);
+console.log(post);
+</script>
 </head>
 <body>
     <x-navbar />
@@ -32,13 +37,13 @@
 
         <!-- Author Section -->
         <div class="author-section">
-            <img src="https://placehold.co/300" alt="Olujimi Sanwo" class="author-avatar">
+            <img src="{{ $post->user->profile_pic }}" alt="profile_pic" class="author-avatar">
             <div class="author-info">
                 <h4>{{ $post->user->name }}</h4>
-                <div class="author-meta">3 min read · Aug 17, 2024</div>
+                <div class="author-meta">{{ $post->estimatePostReadTime }} min read · {{$post->readableCreatedAt }}</div>
             </div>
             <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
-        </div>
+            </div>
 
         <!-- Post Actions -->
         <div class="post-actions">
@@ -52,19 +57,19 @@
                 </button>
                 <button class="action-btn" onclick="scrollToComments()">
                     <i class="far fa-comment"></i>
-                    <span>3</span>
+                    <span>{{ $post->comments_count }}</span>
                 </button>
             </div>
             <div class="action-right">
-                <button class="action-btn" onclick="toggleBookmark(this)">
+                <button class="action-btn {{ $post->is_bookmarked ? 'active' : ''}}" data-post-id="{{ $post->id }}" data-action="bookmark">
                     <i class="far fa-bookmark"></i>
                 </button>
-                <button class="action-btn" onclick="sharePost()">
-                    <i class="fas fa-share"></i>
-                </button>
-                <button class="action-btn">
-                    <i class="fas fa-ellipsis-h"></i>
-                </button>
+                {{-- <button class="action-btn" onclick="sharePost()"> --}}
+                {{--     <i class="fas fa-share"></i> --}}
+                {{-- </button> --}}
+                {{-- <button class="action-btn"> --}}
+                {{--     <i class="fas fa-ellipsis-h"></i> --}}
+                {{-- </button> --}}
             </div>
         </div>
 
@@ -74,20 +79,28 @@
             {{-- Dynamically render the blog --}}
         </div>
 
-        <!-- Author Card -->
-        <div class="author-card">
-            <div class="author-card-header">
-                <img src="https://placehold.co/300" alt="Olujimi Sanwo" class="author-card-avatar">
-                <div class="author-card-info">
-                    <h4>Written by {{ $post->user->name }}</h4>
-                    <div class="author-card-meta">192 followers · 237 following</div>
-                </div>
-                <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
-            </div>
-            <div class="author-card-bio">
-                {{ $post->user->bio }}
-            </div>
+        {{-- Dynamically add tags --}}
+        <hr />
+        <div class="tags">
+            @foreach ($post->tags as $tag)
+              <span class="tag is-medium">{{ $tag->name }}</span>
+            @endforeach
         </div>
+
+        <!-- Author Card -->
+        {{-- <div class="author-card"> --}}
+        {{--     <div class="author-card-header"> --}}
+        {{--         <img src="{{ $post->user->profile_pic }}" alt="profile_pic" class="author-card-avatar"> --}}
+        {{--         <div class="author-card-info"> --}}
+        {{--             <h4>Written by {{ $post->user->name }}</h4> --}}
+        {{--             <div class="author-card-meta">192 followers · 237 following</div> --}}
+        {{--         </div> --}}
+        {{--         <button class="follow-btn" onclick="toggleFollow(this)">Follow</button> --}}
+        {{--     </div> --}}
+        {{--     <div class="author-card-bio"> --}}
+        {{--         {{ $post->user->bio }} --}}
+        {{--     </div> --}}
+        {{-- </div> --}}
 
         <!-- Comments Section -->
         <div class="comments-section">
@@ -106,98 +119,33 @@
             <div id="comments-container" data-comment="{{ json_encode($post->comments) }}">
             <!-- Comments List -->
 
-            <div class="comment-item">
-                <img src="https://placehold.co/400" alt="Sarah Martinez" class="comment-avatar">
-                <div class="comment-content">
-                    <div class="comment-header">
-                        <span class="comment-author">Sarah Martinez</span>
-                        <span class="comment-time">6 hours ago</span>
-                    </div>
-                    <div class="comment-text">
-                        Perfect timing! I'm working on a photo gallery feature and this tutorial covers everything I need. The code examples are clear and easy to follow.
-                    </div>
-                    <div class="comment-actions">
-                        <button class="comment-action" onclick="toggleCommentLike(this)">
-                            <i class="far fa-heart"></i>
-                            <span>15</span>
-                        </button>
-                        <button class="comment-action">
-                            <i class="fas fa-reply"></i>
-                            Reply
-                        </button>
-                    </div>
-                </div>
-            </div>
+            {{-- <div class="comment-item"> --}}
+            {{--     <img src="https://placehold.co/400" alt="Sarah Martinez" class="comment-avatar"> --}}
+            {{--     <div class="comment-content"> --}}
+            {{--         <div class="comment-header"> --}}
+            {{--             <span class="comment-author">Sarah Martinez</span> --}}
+            {{--             <span class="comment-time">6 hours ago</span> --}}
+            {{--         </div> --}}
+            {{--         <div class="comment-text"> --}}
+            {{--             Perfect timing! I'm working on a photo gallery feature and this tutorial covers everything I need. The code examples are clear and easy to follow. --}}
+            {{--         </div> --}}
+            {{--         <div class="comment-actions"> --}}
+            {{--             <button class="comment-action" onclick="toggleCommentLike(this)"> --}}
+            {{--                 <i class="far fa-heart"></i> --}}
+            {{--                 <span>15</span> --}}
+            {{--             </button> --}}
+            {{--             <button class="comment-action"> --}}
+            {{--                 <i class="fas fa-reply"></i> --}}
+            {{--                 Reply --}}
+            {{--             </button> --}}
+            {{--         </div> --}}
+            {{--     </div> --}}
+            {{-- </div> --}}
             </div>
         </div>
     </div>
 
     <script>
-        // Toggle follow button
-        function toggleFollow(btn) {
-            if (btn.textContent === 'Follow') {
-                btn.textContent = 'Following';
-                btn.style.background = '#1a8917';
-                btn.style.color = 'white';
-            } else {
-                btn.textContent = 'Follow';
-                btn.style.background = 'none';
-                btn.style.color = '#1a8917';
-            }
-        }
-
-        // Toggle like button
-        function toggleLike(btn) {
-            const icon = btn.querySelector('i');
-            const count = btn.querySelector('span');
-            const currentCount = parseInt(count.textContent);
-
-            if (icon.classList.contains('far')) {
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                icon.style.color = '#ff3040';
-                count.textContent = currentCount + 1;
-            } else {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                icon.style.color = '#6b6b6b';
-                count.textContent = currentCount - 1;
-            }
-        }
-
-        // Toggle bookmark
-        function toggleBookmark(btn) {
-            const icon = btn.querySelector('i');
-
-            if (icon.classList.contains('far')) {
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                icon.style.color = '#1a8917';
-            } else {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                icon.style.color = '#6b6b6b';
-            }
-        }
-
-        // Toggle comment like
-        function toggleCommentLike(btn) {
-            const icon = btn.querySelector('i');
-            const count = btn.querySelector('span');
-            const currentCount = parseInt(count.textContent);
-
-            if (icon.classList.contains('far')) {
-                icon.classList.remove('far');
-                icon.classList.add('fas');
-                icon.style.color = '#ff3040';
-                count.textContent = currentCount + 1;
-            } else {
-                icon.classList.remove('fas');
-                icon.classList.add('far');
-                icon.style.color = '#6b6b6b';
-                count.textContent = currentCount - 1;
-            }
-        }
 
         // Scroll to comments
         function scrollToComments() {
@@ -206,20 +154,6 @@
             });
         }
 
-        // Share post
-        function sharePost() {
-            if (navigator.share) {
-                navigator.share({
-                    title: 'Reading Images In Laravel Using Image Intervention 3',
-                    text: 'Check out this article about Laravel image processing',
-                    url: window.location.href
-                });
-            } else {
-                // Fallback for browsers that don't support Web Share API
-                navigator.clipboard.writeText(window.location.href);
-                alert('Link copied to clipboard!');
-            }
-        }
     </script>
 </body>
 </html>
