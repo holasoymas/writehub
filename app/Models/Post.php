@@ -37,7 +37,9 @@ class Post extends Model
 
     public function readableCreatedAt(): Attribute
     {
-        return Attribute::make(get: fn() => $this->created_at->format('M j, Y'));
+        return Attribute::make(
+            get: fn() => $this->created_at->format('M j, Y h:i A') // Example: Sep 10, 2025 03:45 PM
+        );
     }
 
     public function estimatePostReadTime(): Attribute

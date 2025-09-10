@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Traits\Likable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -13,6 +14,9 @@ class Comment extends Model
     use HasFactory, Likable;
 
     protected $fillable = ['parent_id', 'post_id', 'body', 'user_id'];
+
+    // append formatted date
+    protected $appends = ['readable_created_at'];
 
     protected static function booted()
     {
@@ -51,5 +55,12 @@ class Comment extends Model
     public function recursiveReplies(): HasMany
     {
         return $this->replies()->with('recursiveReplies');
+    }
+
+    public function readableCreatedAt(): Attribute
+    {
+        return Attribute::make(
+            get: fn() => $this->created_at->format('M j, Y h:i A') // Example: Sep 10, 2025 03:45 PM
+        );
     }
 }
