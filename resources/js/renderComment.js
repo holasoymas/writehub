@@ -1,4 +1,5 @@
-import axios, { AxiosError } from "axios";
+import axios from "axios";
+import { showErrorBox } from "./error-box";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -77,24 +78,24 @@ document.addEventListener('DOMContentLoaded', () => {
                 const { status, data } = error.response;
 
                 if (status === 401) {
-                    alert("Login to comment");
+                    showErrorBox();
                     cancelReply();
                 }
 
                 if (status === 422) {
                     const errors = data.errors;
                     let messages = Object.values(errors).flat().join('\n');
-                    alert(`Validation Failed:\n${messages}`);
+                    showErrorBox('Validation Error', messages);
                 }
 
                 if (status === 500) {
-                    alert("Something went wrong, Try again later");
+                    showErrorBox('Server Error', 'Something went wrong, Please try again later');
                     cancelReply();
                 }
 
             } else {
 
-                alert("Something went wrong, Try again later");
+                showErrorBox('Server Error', 'Something went wrong, Please try again later');
             }
         }
     })
@@ -146,24 +147,24 @@ document.addEventListener('DOMContentLoaded', () => {
                     const { status, data } = error.response;
 
                     if (status === 401) {
-                        alert("Login to comment");
+                        showErrorBox();
                         cancelReply();
                     }
 
                     if (status === 422) {
                         const errors = data.errors;
                         let messages = Object.values(errors).flat().join('\n');
-                        alert(`Validation Failed:\n${messages}`);
+                        showErrorBox('Validation Error', messages);
                     }
 
                     if (status === 500) {
-                        alert("Something went wrong, Try again later");
+                        showErrorBox('Server Error', 'Something went wrong, Please try again later');
                         cancelReply();
                     }
 
                 } else {
 
-                    alert("Something went wrong, Try again later");
+                    showErrorBox('Server Error', 'Something went wrong, Please try again later');
                 }
             }
         }
@@ -185,11 +186,11 @@ function renderComments(comments, parentElement, clearDom = true) {
         const replies = comment.recursive_replies || [];
 
         commentDiv.innerHTML = `
-                    <img src="https://placehold.co/400" alt="${'pic'}" class="comment-avatar">
+                    <img src="${comment.user.profile_pic}" alt="${'pic'}" class="comment-avatar">
                     <div class="comment-content" data-likable-id='${comment.id}' data-likable-type='Comment'>
                         <div class="comment-header">
-                            <span class="comment-author">${"ram"}</span>
-                            <span class="comment-time">${comment.created_at}</span>
+                            <span class="comment-author"><a class="has-text-dark" href="/user/${comment.user.id}">${comment.user.name}</a></span>
+                            <span class="comment-time">${comment.readable_created_at}</span>
                         </div>
                         <div class="comment-text">
                             ${comment.body}
@@ -197,7 +198,7 @@ function renderComments(comments, parentElement, clearDom = true) {
                         <div class="comment-actions">
                             <button class="comment-action like-btn ${comment.is_liked ? 'liked' : ''}">
                                 <i class="fa-solid fa-hands-clapping"></i>
-                                <span>${comment.likes_count}</span>
+                                <span>${comment.likes_count || 0}</span>
                             </button>
                             <button class="comment-action reply-btn">
                                 <i class="fas fa-reply"></i>

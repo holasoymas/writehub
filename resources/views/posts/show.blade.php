@@ -4,13 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Reading Images In Laravel Using Image Intervention 3 - Medium</title>
+    <title> Writehub | {{ $post->title }}</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/show.post.css') }}">
     <link rel="stylesheet" href="{{ asset('css/show.profile.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/profile.dropdown.css') }}">
     <link rel="stylesheet" href="{{ asset('css/comments.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/error-box.css') }}">
     <script type="module" src="{{ asset('js/navbar.js') }}"></script>
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/atom-one-dark.min.css">
@@ -22,6 +24,7 @@
 @vite(['resources/js/renderComment.js'])
 @vite(['resources/js/likes.js'])
 @vite(['resources/js/bookmark.js'])
+@vite(['resources/js/dropdown.js'])
 
 <script>hljs.highlightAll();
 const post = @json($post);
@@ -30,6 +33,10 @@ console.log(post);
 </head>
 <body>
     <x-navbar />
+
+    {{-- for displaying errors  --}}
+    <x-error-box />
+
     <div class="medium-container">
 
         <!-- Post Title -->
@@ -42,7 +49,30 @@ console.log(post);
                 <h4>{{ $post->user->name }}</h4>
                 <div class="author-meta">{{ $post->estimatePostReadTime }} min read · {{$post->readableCreatedAt }}</div>
             </div>
-            <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+            <div class="column is-narrow follow-btn-div">
+
+                {{-- following/ follow btn --}}
+            @auth
+                @if ($post->user->isNotSelf())
+                    @if (auth()->user()->followings->contains($post->user))
+                        <form method="POST" action='{{ route('user.unfollow', ['user' => $post->user ]) }}'>
+                            @csrf
+                            @method("DELETE")
+                            <button class="follow-btn">Following</button>
+                        </form>
+                    @else
+                        <form method="POST" action='{{ route('user.follow', ['user' => $post->user ]) }}'>
+                            @csrf
+                            <button class="follow-btn">Follow</button>
+                        </form>
+                    @endif
+                @endif
+                @else
+                <form method="GET" action='{{ route('login') }}'>
+                    <button class="follow-btn">Follow</button>
+                </form>
+            @endauth
+            </div>
             </div>
 
         <!-- Post Actions -->
@@ -64,13 +94,7 @@ console.log(post);
                 <button class="action-btn {{ $post->is_bookmarked ? 'active' : ''}}" data-post-id="{{ $post->id }}" data-action="bookmark">
                     <i class="far fa-bookmark"></i>
                 </button>
-                {{-- <button class="action-btn" onclick="sharePost()"> --}}
-                {{--     <i class="fas fa-share"></i> --}}
-                {{-- </button> --}}
-                {{-- <button class="action-btn"> --}}
-                {{--     <i class="fas fa-ellipsis-h"></i> --}}
-                {{-- </button> --}}
-            </div>
+           </div>
         </div>
 
         <!-- Post Content -->
@@ -87,24 +111,9 @@ console.log(post);
             @endforeach
         </div>
 
-        <!-- Author Card -->
-        {{-- <div class="author-card"> --}}
-        {{--     <div class="author-card-header"> --}}
-        {{--         <img src="{{ $post->user->profile_pic }}" alt="profile_pic" class="author-card-avatar"> --}}
-        {{--         <div class="author-card-info"> --}}
-        {{--             <h4>Written by {{ $post->user->name }}</h4> --}}
-        {{--             <div class="author-card-meta">192 followers · 237 following</div> --}}
-        {{--         </div> --}}
-        {{--         <button class="follow-btn" onclick="toggleFollow(this)">Follow</button> --}}
-        {{--     </div> --}}
-        {{--     <div class="author-card-bio"> --}}
-        {{--         {{ $post->user->bio }} --}}
-        {{--     </div> --}}
-        {{-- </div> --}}
-
         <!-- Comments Section -->
         <div class="comments-section">
-            <div class="comments-title">Responses (2)</div>
+            <div class="comments-title">Responses ({{ $post->comments_count }})</div>
 
             <!-- Comment Form -->
             <div class="comment-form">
@@ -118,29 +127,6 @@ console.log(post);
 
             <div id="comments-container" data-comment="{{ json_encode($post->comments) }}">
             <!-- Comments List -->
-
-            {{-- <div class="comment-item"> --}}
-            {{--     <img src="https://placehold.co/400" alt="Sarah Martinez" class="comment-avatar"> --}}
-            {{--     <div class="comment-content"> --}}
-            {{--         <div class="comment-header"> --}}
-            {{--             <span class="comment-author">Sarah Martinez</span> --}}
-            {{--             <span class="comment-time">6 hours ago</span> --}}
-            {{--         </div> --}}
-            {{--         <div class="comment-text"> --}}
-            {{--             Perfect timing! I'm working on a photo gallery feature and this tutorial covers everything I need. The code examples are clear and easy to follow. --}}
-            {{--         </div> --}}
-            {{--         <div class="comment-actions"> --}}
-            {{--             <button class="comment-action" onclick="toggleCommentLike(this)"> --}}
-            {{--                 <i class="far fa-heart"></i> --}}
-            {{--                 <span>15</span> --}}
-            {{--             </button> --}}
-            {{--             <button class="comment-action"> --}}
-            {{--                 <i class="fas fa-reply"></i> --}}
-            {{--                 Reply --}}
-            {{--             </button> --}}
-            {{--         </div> --}}
-            {{--     </div> --}}
-            {{-- </div> --}}
             </div>
         </div>
     </div>

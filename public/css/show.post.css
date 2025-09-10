@@ -88,6 +88,11 @@ li>ul {
     margin-top: 4px;
 }
 
+.follow-btn-div {
+    margin-left: auto;
+
+}
+
 .follow-btn {
     margin-left: auto;
     background: none;
@@ -268,6 +273,11 @@ pre {
 }
 
 @media (max-width: 768px) {
+
+    .columns {
+        margin: auto;
+    }
+
     .medium-container {
         padding: 0 16px;
     }
