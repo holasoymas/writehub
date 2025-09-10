@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\FollowersList;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
@@ -43,3 +44,6 @@ Route::get('posts/{slug}', [PostController::class, 'show'])->name('posts.show');
 
 Route::post('posts/uploadImage', [PostController::class, 'uploadImage'])->name('uploadImage');
 Route::post('posts/ploadImageUrl', [PostController::class, 'ploadImageUrl'])->name('uploadImageUrl');
+
+Route::get('user/{id}/followers', [FollowersList::class, 'followers'])->name('followers');
+Route::get('user/{id}/followings', [FollowersList::class, 'followings'])->name('followings');
