@@ -6,6 +6,8 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowersList;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\ReportController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFollowController;
 use Illuminate\Support\Facades\Route;
@@ -37,6 +39,8 @@ Route::middleware(["auth"])->group(function () {
     Route::post('/like', [LikeController::class, 'toggleLike']);
 
     Route::post('/bookmark', [BookmarkController::class, 'toggleBookMark']);
+
+    Route::post('/report', [ReportController::class, 'report']);
 });
 
 // use it at last to prevent route shadowing
@@ -47,3 +51,5 @@ Route::post('posts/ploadImageUrl', [PostController::class, 'ploadImageUrl'])->na
 
 Route::get('user/{id}/followers', [FollowersList::class, 'followers'])->name('followers');
 Route::get('user/{id}/followings', [FollowersList::class, 'followings'])->name('followings');
+
+Route::get('/search', [SearchController::class, 'search']);

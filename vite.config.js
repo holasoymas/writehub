@@ -13,6 +13,7 @@ const frontendFiles = [
     'resources/js/dropdown.js',
     'resources/js/followers.js',
     'resources/js/error-box.js',
+    'resources/js/searchInput.js',
 ]
 
 export default defineConfig({
