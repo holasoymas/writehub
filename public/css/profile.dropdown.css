@@ -1,0 +1,96 @@
+/* Profile dropdown container - must wrap trigger and menu */
+.profile-dropdown {
+    position: relative;
+}
+
+/* Dropdown menu container - HIDDEN BY DEFAULT */
+.dropdown-menu {
+    display: none;
+    /* This is crucial - hidden by default */
+    background: white;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    min-width: 220px;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    position: absolute;
+    top: 100%;
+    right: -20px;
+    left: auto;
+    z-index: 1000;
+}
+
+/* SHOW DROPDOWN WHEN ACTIVE - THIS IS THE KEY RULE! */
+.dropdown.is-active .dropdown-menu {
+    display: block;
+}
+
+/* Individual dropdown menu items */
+.dropdown-item {
+    padding: 0.75rem 1.25rem;
+    color: #363636;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-decoration: none;
+}
+
+/* Dropdown item hover - minimal dark effect */
+.dropdown-item:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    color: #363636;
+}
+
+/* Dropdown item icons */
+.dropdown-item i {
+    width: 16px;
+    font-size: 14px;
+}
+
+/* Dropdown divider line */
+.dropdown-divider {
+    margin: 0.5rem 0;
+    border-color: rgba(0, 0, 0, 0.1);
+}
+
+/* User info section at top of dropdown */
+.user-info {
+    padding: 1rem 1.25rem 0.5rem;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: 0.5rem;
+}
+
+/* User name styling */
+.user-name {
+    font-weight: 600;
+    color: #363636;
+    margin-bottom: 0.25rem;
+}
+
+/* User email styling */
+.user-email {
+    font-size: 0.85rem;
+    color: #7a7a7a;
+}
+
+/* Logout item - red color */
+.logout-item {
+    color: #ff3860 !important;
+}
+
+/* Logout item hover - minimal dark effect */
+.logout-item:hover {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    color: #ff3860 !important;
+}
+
+/* Mobile: Profile on left side (hamburger menu) - align dropdown's LEFT edge with profile's LEFT edge */
+@media screen and (max-width: 1023px) {
+    .dropdown-menu {
+        right: auto;
+        /* Remove right alignment */
+        left: 0;
+        /* Dropdown's left edge = Profile's left edge */
+    }
+}
