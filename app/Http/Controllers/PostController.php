@@ -133,8 +133,11 @@ class PostController extends Controller
             'tags',
             'comments' => function ($q) {
                 $q->whereNull('parent_id')->with([
-                    'likes',                   // eager load likes on top-level comments
-                    'recursiveReplies.likes'  // eager load likes on replies recursively
+                    'likes', // eager load likes on top-level comments
+                    'user', // top level user
+                    'recursiveReplies' => function ($r) {
+                        $r->with(['user', 'likes']); // eager load user and likes for replies
+                    },
                 ]);
             }
         ])
@@ -143,7 +146,7 @@ class PostController extends Controller
             ->firstOrFail();
 
         Log::info($post);
-        $post->content = json_decode($post->content); // object (or use `true` for array)
+        // $post->content = json_decode($post->content); // object (or use `true` for array)
 
         $authUser = Auth::user();
         $authUserId = Auth::id();
