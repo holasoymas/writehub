@@ -111,6 +111,24 @@
     opacity: 0.5;
 }
 
+
+.truncate-2-lines {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    /* number of lines to show */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.card-header {
+    border-bottom: none;
+    /* remove the default border */
+    box-shadow: none;
+    /* also removes subtle shadow if any */
+}
+
 .footer {
     background-color: #fafafa;
     border-top: 1px solid #e5e7eb;
