@@ -25,6 +25,7 @@
 @vite(['resources/js/likes.js'])
 @vite(['resources/js/bookmark.js'])
 @vite(['resources/js/dropdown.js'])
+@vite(['resources/js/searchInput.js'])
 
 <script>hljs.highlightAll();
 const post = @json($post);

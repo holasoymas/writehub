@@ -3,25 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Adarsh Gupta - Medium</title>
+    <title>{{ $user->name }} - Writehub</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.9.4/css/bulma.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 
     <link rel="stylesheet" href="{{ asset('css/show.profile.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-    <script type="module" src="{{ asset('js/show.profile.js') }}"></script>
+    <link rel="stylesheet" href="{{ asset('css/profile.dropdown.css') }}">
+    <script type="module" src="{{ asset('js/navbar.js') }}"></script>
+    {{-- <script type="module" src="{{ asset('js/show.profile.js') }}"></script> --}}
 
+    @vite(['resources/js/dropdown.js'])
+    @vite(['resources/js/followers.js'])
+    @vite(['resources/js/searchInput.js'])
 </head>
 <body>
     <!-- Navigation / navbar -->
     <x-navbar />
+        <script>
+            const data = @json($user->posts);
+console.log(data)
+        </script>
 
     <div class="container">
-        <div class="columns is-desktop">
+        <div class="columns is-desktop mx-2">
             <!-- Main Content -->
             <div class="column is-8">
                 <!-- Profile Header -->
-                <div class="profile-header">
+                <div class="profile-header" data-user-id="{{ $user->id }}">
                     <div class="columns is-vcentered">
                         <div class="column is-narrow">
                             <img src=" {{ $user->profile_pic }}"
@@ -45,7 +54,7 @@
 
                             @if ($user->isNotSelf())
                                 @if (auth()->user()->followings->contains($user))
-                                    <div class="column is-narrow">
+                                    <div class="column is-narrow follow-btn-div">
                                       <form method="POST" action='{{ route('user.unfollow', ['user' => $user ]) }}'>
                                           @csrf
                                           @method("DELETE")
@@ -53,7 +62,7 @@
                                       </form>
                                     </div>
                                 @else
-                                    <div class="column is-narrow">
+                                    <div class="column is-narrow follow-btn-div">
                                       <form method="POST" action='{{ route('user.follow', ['user' => $user ]) }}'>
                                           @csrf
                                         <button class="button is-dark is-rounded">Follow</button>
@@ -62,7 +71,7 @@
                                 @endif
                             @endif
                             @else
-                                    <div class="column is-narrow">
+                                    <div class="column is-narrow follow-btn-div">
                                       <form method="GET" action='{{ route('login') }}'>
                                         <button class="button is-dark is-rounded">Follow</button>
                                       </form>
@@ -82,23 +91,50 @@
 
                 <!-- Home Tab Content -->
                 <div id="home-content" class="tab-content is-active">
-                    <!-- Pinned Section -->
-                    <div class="block">
-                        <div class="has-text-grey">
-                            <i class="fas fa-thumbtack"></i> Pinned
-                        </div>
-                    </div>
 
                     <!-- Articles -->
                     <div class="articles-section">
-                        <div class="article-card">
-                            <div class="columns">
+                    @forelse ($user->posts as $item)
+
+@php
+    $blocks = $item->content; // already in array if casted in model
+            $firstPara = collect($blocks)->firstWhere('type', 'paragraph');
+            $firstImage = collect($blocks)->firstWhere('type', 'image');
+@endphp
+
+ <div class="article-card" data-post-id="{{ $item->id }}">
+    <header class="card-header">
+      <p class="card-header-title">
+        Post Title
+      </p>
+      <div class="card-header-icon" aria-label="options">
+        <div class="dropdown is-right dropdown-article-action">
+          <div class="dropdown-trigger">
+            <button class="button is-white" aria-haspopup="true" aria-controls="dropdown-options">
+              <span class="icon is-small">⋮</span>
+            </button>
+          </div>
+          <div class="dropdown-menu" id="dropdown-options" role="menu">
+            <div class="dropdown-content">
+              <a class="dropdown-item update">Update Post</a>
+              <a class="dropdown-item del">Delete Post</a>
+              <a class="dropdown-item report">Report</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+                   <div class="columns">
                                 <div class="column">
                                     <div class="article-meta">
-                                        <span class="tag is-light">Write A Catalyst</span>
+                                        @foreach ($item->tags as $tag)
+                                            <span class="tag is-light">{{ $tag->name }}</span>
+                                        @endforeach
                                     </div>
-                                    <h2 class="title is-4">Coding vs VIBE Coding</h2>
-                                    <p class="subtitle is-6 has-text-grey">Vibe Coding just replaced your job🤷‍♂️</p>
+                                    <h2 class="title is-4"><a class="has-text-black" href="{{ route('posts.show', ['slug' => $item->slug]) }}">{{ $item->title }}</a></h2>
+                                    @if ($firstPara)
+                                    <p class="subtitle is-6 has-text-grey truncate-2-lines">{{ $firstPara["data"]["text"] }}</p>
+                                    @endif
                                     <div class="article-stats">
                                         <span><i class="fas fa-star"></i> Mar 15</span>
                                         <span><i class="fas fa-clap"></i> 3.6K</span>
@@ -106,53 +142,17 @@
                                     </div>
                                 </div>
                                 <div class="column is-narrow">
-                                    <img src="https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=200&h=200&fit=crop"
+                                    @if ($firstImage)
+                                     <img src="{{ $firstImage['data']['file']['url'] }}"
                                          alt="Article" class="article-image">
-                                </div>
+                                    @endif
+                                    </div>
                             </div>
                         </div>
 
-                        <div class="article-card">
-                            <div class="columns">
-                                <div class="column">
-                                    <div class="article-meta">
-                                        <span class="tag is-light">JavaScript</span>
-                                    </div>
-                                    <h2 class="title is-4">Modern JavaScript Patterns for Better Code</h2>
-                                    <p class="subtitle is-6 has-text-grey">Exploring ES6+ features that will make your code cleaner and more efficient</p>
-                                    <div class="article-stats">
-                                        <span><i class="fas fa-star"></i> Mar 10</span>
-                                        <span><i class="fas fa-clap"></i> 2.1K</span>
-                                        <span><i class="fas fa-comment"></i> 89</span>
-                                    </div>
-                                </div>
-                                <div class="column is-narrow">
-                                    <img src="https://images.unsplash.com/photo-1627398242454-45a1465c2479?w=200&h=200&fit=crop"
-                                         alt="Article" class="article-image">
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="article-card">
-                            <div class="columns">
-                                <div class="column">
-                                    <div class="article-meta">
-                                        <span class="tag is-light">Web Development</span>
-                                    </div>
-                                    <h2 class="title is-4">Building Responsive Layouts with CSS Grid</h2>
-                                    <p class="subtitle is-6 has-text-grey">A comprehensive guide to mastering CSS Grid for modern web layouts</p>
-                                    <div class="article-stats">
-                                        <span><i class="fas fa-star"></i> Mar 5</span>
-                                        <span><i class="fas fa-clap"></i> 1.8K</span>
-                                        <span><i class="fas fa-comment"></i> 67</span>
-                                    </div>
-                                </div>
-                                <div class="column is-narrow">
-                                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=200&h=200&fit=crop"
-                                         alt="Article" class="article-image">
-                                </div>
-                            </div>
-                        </div>
+                    @empty
+                        <p> No post found </p>
+                    @endforelse
                     </div>
                 </div>
 
@@ -268,6 +268,46 @@
             </section>
         </div>
     </div>
+
+{{-- Report modal  --}}
+<div class="modal" id="report-modal">
+  <div class="modal-background"></div>
+  <div class="modal-card">
+    <header class="modal-card-head">
+      <p class="modal-card-title">Report</p>
+      <button class="delete" aria-label="close"></button>
+    </header>
+    <section class="modal-card-body">
+
+<div class="control report-reason">
+  <label class="radio">
+    <input type="radio" name="report_reason" value="misinformation" />
+    Misinformation
+  </label> <br />
+  <label class="radio">
+    <input type="radio" name="report_reason" value="low_quality"  />
+    Low Quality
+  </label> <br />
+  <label class="radio" >
+    <input type="radio" name="report_reason" value="sexual_content" />
+    Sexual Content
+  </label><br />
+ <label class="radio" >
+    <input type="radio" name="report_reason" value="other" />
+   Other
+  </label><br />
+</div>
+    </section>
+    <footer class="modal-card-foot">
+      <div class="buttons">
+        <button class="button is-success">Report</button>
+        <button class="button">Cancel</button>
+      </div>
+    </footer>
+  </div>
+</div>
+
+
 
     <!-- Footer -->
     <x-footer />

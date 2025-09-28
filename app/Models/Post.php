@@ -14,6 +14,10 @@ class Post extends Model
 {
     use Likable;
 
+    //NOTE: In an Eloquent model, the $casts property tells Laravel:
+    // “Whenever you fetch this column from the database, automatically convert it into this PHP type.”
+    protected $casts = ['content' => 'array'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
@@ -60,5 +64,10 @@ class Post extends Model
     public function getIsBookmarkedAttribute()
     {
         return Auth::check() && $this->bookmarkedUsers->contains(Auth::id());
+    }
+
+    public function reports(): HasMany
+    {
+        return $this->hasMany(Report::class);
     }
 }
