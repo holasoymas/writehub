@@ -10,16 +10,22 @@
     <link rel="stylesheet" href="{{ asset('css/show.profile.css') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
     <link rel="stylesheet" href="{{ asset('css/profile.dropdown.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/error-box.css') }}">
     <script type="module" src="{{ asset('js/navbar.js') }}"></script>
     {{-- <script type="module" src="{{ asset('js/show.profile.js') }}"></script> --}}
 
     @vite(['resources/js/dropdown.js'])
     @vite(['resources/js/followers.js'])
     @vite(['resources/js/searchInput.js'])
+    @vite(['resources/js/report.js'])
 </head>
 <body>
     <!-- Navigation / navbar -->
-    <x-navbar />
+    <x-navbar user="Auth::user()" />
+
+    {{-- for displaying errors  --}}
+    <x-error-box />
+
         <script>
             const data = @json($user->posts);
 console.log(data)
@@ -83,9 +89,9 @@ console.log(data)
                 <!-- Navigation Tabs -->
                 <div class="tabs">
                     <ul>
-                        <li class="is-active" data-tab="home"><a onclick="switchTab('home')">Home</a></li>
-                        <li data-tab="lists"><a onclick="switchTab('lists')">Lists</a></li>
-                        <li data-tab="about"><a onclick="switchTab('about')">About</a></li>
+                        <li class="is-active" data-tab="home-content"><a onclick="switchTab('home-content')">Home</a></li>
+                        <li data-tab="lists-content"><a onclick="switchTab('lists-content')">Lists</a></li>
+                        <li data-tab="about-content"><a onclick="switchTab('about-content')">About</a></li>
                     </ul>
                 </div>
 
@@ -96,11 +102,11 @@ console.log(data)
                     <div class="articles-section">
                     @forelse ($user->posts as $item)
 
-@php
-    $blocks = $item->content; // already in array if casted in model
+        @php
+            $blocks = $item->content; // already in array if casted in model
             $firstPara = collect($blocks)->firstWhere('type', 'paragraph');
             $firstImage = collect($blocks)->firstWhere('type', 'image');
-@endphp
+        @endphp
 
  <div class="article-card" data-post-id="{{ $item->id }}">
     <header class="card-header">
@@ -280,7 +286,7 @@ console.log(data)
     <section class="modal-card-body">
 
 <div class="control report-reason">
-  <label class="radio">
+  <label class="radio is-medium">
     <input type="radio" name="report_reason" value="misinformation" />
     Misinformation
   </label> <br />
@@ -293,9 +299,10 @@ console.log(data)
     Sexual Content
   </label><br />
  <label class="radio" >
-    <input type="radio" name="report_reason" value="other" />
+    <input type="radio" name="report_reason" value="other" id="other-reason" />
    Other
   </label><br />
+  <input type="text" class="input" placeholder="Specify reason" name="other-reason" id="other-reason-input" style="display:none;" />
 </div>
     </section>
     <footer class="modal-card-foot">
@@ -308,11 +315,24 @@ console.log(data)
 </div>
 
 
-
     <!-- Footer -->
     <x-footer />
 
     <script>
+
+function switchTab(tabName) {
+  // hide all contents
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('is-active'));
+
+  // remove active state from all tabs
+  document.querySelectorAll('.tabs li').forEach(el => el.classList.remove('is-active'));
+
+  // show selected content
+  document.getElementById(tabName).classList.add('is-active');
+
+  // set active tab
+  document.querySelector(`.tabs li[data-tab="${tabName}"]`).classList.add('is-active');
+}
          </script>
 </body>
 </html>

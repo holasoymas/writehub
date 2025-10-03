@@ -33,7 +33,7 @@ console.log(post);
 </script>
 </head>
 <body>
-    <x-navbar />
+    <x-navbar :user="$post->user" />
 
     {{-- for displaying errors  --}}
     <x-error-box />

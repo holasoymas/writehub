@@ -14,6 +14,7 @@ const frontendFiles = [
     'resources/js/followers.js',
     'resources/js/error-box.js',
     'resources/js/searchInput.js',
+    'resources/js/report.js',
 ]
 
 export default defineConfig({
