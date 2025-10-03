@@ -6,7 +6,6 @@ const profilePic = document.querySelector('.profile-avatar');
 
 // Add click event to profile picture
 profilePic.addEventListener('click', (e) => {
-    console.log("Profile picture clicked");
 
     // Stop the event from bubbling up to document
     // This prevents the "click outside" handler from running immediately
@@ -27,7 +26,7 @@ document.addEventListener('click', (e) => {
 });
 
 // Optional: Handle dropdown item clicks
-const dropdownItems = document.querySelectorAll('.dropdown-item');
+const dropdownItems = document.querySelectorAll('.dropdown-item.nav');
 dropdownItems.forEach(item => {
     item.addEventListener('click', (e) => {
         // Prevent default link behavior for demo

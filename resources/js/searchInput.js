@@ -27,7 +27,7 @@ input.addEventListener('input', async (e) => {
         suggestionsBox.innerHTML = `<p class="has-text-grey">No results</p>`;
     } else {
         suggestionsBox.innerHTML = filtered.map(b => `
-      <a href="${b.slug}" class="dropdown-item" style="display:block; padding: 8px; border-bottom: 1px solid #eee;">
+      <a href="/posts/${b.slug}" class="dropdown-item" style="display:block; padding: 8px; border-bottom: 1px solid #eee;">
         ${b.title}
       </a>
     `).join('');

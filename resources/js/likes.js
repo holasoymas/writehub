@@ -1,4 +1,5 @@
 import axios from "axios";
+import { showErrorBox } from "./error-box";
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -45,24 +46,25 @@ async function fetchLike(likeButton, likableObj) {
             const { status, data } = err.response;
 
             if (status === 401) {
-                alert("Login to comment");
+                showErrorBox();
                 cancelReply();
             }
 
             if (status === 422) {
                 const errors = data.errors;
                 let messages = Object.values(errors).flat().join('\n');
-                alert(`Validation Failed:\n${messages}`);
+                showErrorBox('Validation Error', messages);
             }
 
             if (status === 500) {
-                alert("Something went wrong, Try again later");
+                showErrorBox('Server Error', "Something went wrong, Try again later");
+                //needed for reply comment btn so it close when error come
                 cancelReply();
             }
 
         } else {
 
-            alert("Something went wrong, Try again later");
+            showErrorBox('Server Error', "Something went wrong, Try again later");
         }
     }
 }
