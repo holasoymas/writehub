@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Report extends Model
 {
+
+    protected $fillable = ['post_id', 'user_id', 'reason', 'other'];
+
     public function blog(): BelongsTo
     {
         return $this->belongsTo(Post::class);
