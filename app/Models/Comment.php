@@ -54,7 +54,7 @@ class Comment extends Model
     // for recursive multiple replies
     public function recursiveReplies(): HasMany
     {
-        return $this->replies()->with('recursiveReplies');
+        return $this->replies()->with(['user', 'likes', 'recursiveReplies']);
     }
 
     public function readableCreatedAt(): Attribute
