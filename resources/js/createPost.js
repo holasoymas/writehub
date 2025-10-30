@@ -8,6 +8,13 @@ window.addEventListener('DOMContentLoaded', () => {
     // console.log(token);
     // console.log(token.content);
 
+    // for editing
+    let blogId = window.postId || null;
+
+    renderTags();
+    updateCounter();
+    console.log(tags);
+
     const baseUrl = window.location.origin;
 
     const editor = new EditorJS({
@@ -15,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
         autofocus: true,
 
         data: {
-            blocks: [
+            blocks: window.postData || [
                 {
                     type: 'header',
                     data: {
@@ -123,7 +130,12 @@ window.addEventListener('DOMContentLoaded', () => {
             }
             console.log(payload);
 
-            const res = await axios.post('/posts', payload);
+            let res;
+            if (blogId) {
+                res = await axios.put(`/posts/${blogId}`, payload);
+            } else {
+                res = await axios.post('/posts', payload);
+            }
 
             if (res.status === 201) {
                 console.log(res.data.message);
@@ -140,7 +152,9 @@ window.addEventListener('DOMContentLoaded', () => {
  * =========================================================
  */
 
-let tags = [];
+// in create => show the empty array
+// in edit page get the tags from backend and get the name only
+let tags = window.postTags.map(tag => tag.name) || [];
 const MAX_TAGS = 5;
 
 const tagInput = document.getElementById('tagInput');
