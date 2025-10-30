@@ -6,6 +6,7 @@ use App\Models\Post;
 use Cloudinary\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rules\File;
@@ -82,14 +83,14 @@ class PostController extends Controller
         $tags = $content["tags"];
         // strip_tags remove the html tags
         $header = strip_tags($content["content"]["blocks"][0]["data"]["text"]);
-        Log::info($header);
-        Log::info($content["content"]["blocks"]);
-        Log::info(json_encode($content["content"]["blocks"]));
+        // Log::info($header);
+        // Log::info($content["content"]["blocks"]);
+        // Log::info(json_encode($content["content"]["blocks"]));
 
         $post = new Post();
         $post->user_id = Auth::id();
         $post->title = $header;
-        $post->content = json_encode($content["content"]["blocks"]);
+        $post->content = $content["content"]["blocks"];
         $post->slug = Str::slug($header);
         $post->save();
 
@@ -145,8 +146,8 @@ class PostController extends Controller
             ->where('slug', $slug)
             ->firstOrFail();
 
-        Log::info($post);
-        // $post->content = json_decode($post->content); // object (or use `true` for array)
+        // Log::info($post);
+        // $post->content = json_decode($post->content, true); // object (or use `true` for array)
 
         $authUser = Auth::user();
         $authUserId = Auth::id();
@@ -166,9 +167,11 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Post $post)
     {
-        //
+        $post->load('tags');
+
+        return view('posts.edit', compact("post"));
     }
 
     /**
@@ -176,7 +179,42 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+
+        $content = $request->all();
+
+        $post = Post::findOrFail($id);
+
+        // Gate::authorize('update', $post);
+
+        if (Gate::denies('update', $post)) {
+            return redirect()
+                ->back()
+                ->withErrors("You are not allowed to edit this post.");
+        }
+
+        $header = strip_tags($content["content"]["blocks"][0]["data"]["text"]);
+
+        $post->title = $header;
+        $post->content = $content["content"]["blocks"];
+        $post->slug = Str::slug($header);
+        $post->save();
+
+
+        $tags = $content["tags"];
+
+        $tagIds = [];
+        foreach ($tags as $tag) {
+            $tag = \App\Models\Tag::firstOrCreate(['name' => $tag]);
+            $tagIds[] = $tag->id;
+        }
+
+        // for attaching tags and detaching old ones
+        $post->tags()->sync($tagIds);
+
+        return response()->json([
+            'redirect_url' => route('posts.show', ['slug' => $post->slug]),
+            'message' => 'Post updated successfully!'
+        ], 201);
     }
 
     /**
