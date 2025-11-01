@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowersList;
@@ -40,7 +41,9 @@ Route::middleware(["auth"])->group(function () {
 
     Route::post('/bookmark', [BookmarkController::class, 'toggleBookMark']);
 
-    Route::post('/report', [ReportController::class, 'report']);
+    Route::post('/report', [ReportController::class, 'report'])->name('post.report');
+
+    Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
 });
 
 // use it at last to prevent route shadowing
