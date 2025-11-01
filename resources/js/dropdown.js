@@ -28,22 +28,10 @@ document.addEventListener('click', (e) => {
 // Optional: Handle dropdown item clicks
 const dropdownItems = document.querySelectorAll('.dropdown-item.nav');
 dropdownItems.forEach(item => {
-    item.addEventListener('click', (e) => {
-        // Prevent default link behavior for demo
-        e.preventDefault();
-
-        // Get the text of the clicked item
-        const action = item.querySelector('span').textContent;
+    item.addEventListener('click', () => {
 
         // Close dropdown after clicking an item
         profileDropdown.classList.remove('is-active');
 
-        // Handle the action (replace this with your actual navigation logic)
-        console.log(`Action clicked: ${action}`);
-
-        // Example: You can add actual navigation here
-        // if (action === 'Logout') {
-        //     window.location.href = '/logout';
-        // }
     });
 });
