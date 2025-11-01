@@ -5,8 +5,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const rawData = JSON.parse(postContainer.dataset.content);
 
-    // console.log(rawData);
-
     renderEditorContent('.post-content', rawData.slice(1));
 })
 
