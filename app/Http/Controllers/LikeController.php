@@ -6,7 +6,7 @@ use App\Models\Comment;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+// use Illuminate\Support\Facades\Log;
 
 class LikeController extends Controller
 {
@@ -17,7 +17,7 @@ class LikeController extends Controller
             'likableType' => 'required|string',
         ]);
 
-        Log::info($validated);
+        // Log::info($validated);
         $likableTypeMap = [
             'Post' => Post::class,
             'Comment' => Comment::class,
@@ -27,7 +27,7 @@ class LikeController extends Controller
         $likable = $likableClass::findOrFail($validated['likableId']);
 
         $existingLike = $likable->likes()->where('user_id', Auth::id())->first();
-        Log::info('Is likes' . $existingLike);
+        // Log::info('Is likes' . $existingLike);
 
         if ($existingLike) {
 
