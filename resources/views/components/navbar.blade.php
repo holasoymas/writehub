@@ -59,11 +59,11 @@
                                         <div class="user-email">{{ Auth::user()->email }}</div>
                                     </div>
 
-                                    <a href="#" class="dropdown-item nav">
+                                    <a href="{{ route('user.show', Auth::id()) }}" class="dropdown-item nav">
                                         <i class="fas fa-user"></i>
                                         <span>View Profile</span>
                                     </a>
-                                    <a href="#" class="dropdown-item nav">
+                                    <a href="{{ route('user.edit', Auth::id()) }}" class="dropdown-item nav">
                                         <i class="fas fa-edit"></i>
                                         <span>Edit Profile</span>
                                     </a>
@@ -93,13 +93,13 @@
 
                                     <hr class="dropdown-divider">
 
-                                    <a href="{{ route('login') }}" class="dropdown-item nav logout-item"
+                                    <a href="#" class="dropdown-item nav logout-item"
                                        onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                         <i class="fas fa-sign-out-alt"></i>
                                         <span>Logout</span>
                                     </a>
 
-                                    <form id="logout-form" action="{{ route('login') }}" method="POST" style="display:none;">
+                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display:none;">
                                         @csrf
                                     </form>
                                 @endauth

@@ -11,15 +11,15 @@
 
         <!-- Modal buttons -->
         <div class="modal-buttons">
-            <button class="modal-btn modal-btn-primary">
+            <button class="modal-btn modal-btn-primary" onclick="window.location='/login';">
                 Sign In
             </button>
             <button
-                class="modal-btn modal-btn-secondary"
-                onclick="document.getElementById('authModal').classList.remove('is-active');
-                         document.documentElement.classList.remove('is-clipped');"
-                >
-                Cancel
+                    class="modal-btn modal-btn-secondary"
+                    onclick="document.getElementById('authModal').classList.remove('is-active');
+                    document.documentElement.classList.remove('is-clipped');"
+                    >
+                    Cancel
             </button>
         </div>
     </div>
