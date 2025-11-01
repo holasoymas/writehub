@@ -10,10 +10,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     // for editing
     let blogId = window.postId || null;
+    let postData = window.postData || null;
 
     renderTags();
     updateCounter();
-    console.log(tags);
 
     const baseUrl = window.location.origin;
 
@@ -22,7 +22,7 @@ window.addEventListener('DOMContentLoaded', () => {
         autofocus: true,
 
         data: {
-            blocks: window.postData || [
+            blocks: postData || [
                 {
                     type: 'header',
                     data: {
@@ -154,7 +154,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 // in create => show the empty array
 // in edit page get the tags from backend and get the name only
-let tags = window.postTags.map(tag => tag.name) || [];
+let tags = window.postTags?.map(tag => tag.name) ?? [];
 const MAX_TAGS = 5;
 
 const tagInput = document.getElementById('tagInput');
