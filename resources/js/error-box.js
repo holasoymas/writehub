@@ -4,9 +4,7 @@ export function showErrorBox(title = 'Authentication Required', message = 'You n
     document.getElementById('modalTitle').textContent = title;
     document.getElementById('modalMessage').textContent = message;
 
-    if (title === 'Validation Error') {
-        document.querySelector(".modal-btn.modal-btn-primary").style.display = "none";
-    }
+    if (title !== 'Authentication Required') document.querySelector(".modal-btn.modal-btn-primary").style.display = "none";
 
     // Show modal
     document.getElementById('authModal').classList.add('is-active');
