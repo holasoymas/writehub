@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\OauthController;
 use App\Http\Controllers\FollowersList;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
@@ -56,3 +57,6 @@ Route::get('user/{id}/followers', [FollowersList::class, 'followers'])->name('fo
 Route::get('user/{id}/followings', [FollowersList::class, 'followings'])->name('followings');
 
 Route::get('/search', [SearchController::class, 'search']);
+
+Route::get('/auth/{provider}/redirect', [OauthController::class, 'redirect'])->name('oauth.redirect');
+Route::get('/auth/{provider}/callback', [OauthController::class, 'callback'])->name('oauth.callback');
