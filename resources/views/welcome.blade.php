@@ -355,7 +355,7 @@
     <body>
         <!-- Navigation -->
 
-        {{-- <x-navbar /> --}}
+        <x-navbar :user="Auth::user()" />
 
             <!-- Hero Section -->
             <section class="hero-section">

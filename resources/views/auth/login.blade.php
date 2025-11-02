@@ -61,24 +61,23 @@
 
                     <!-- Social Login Options -->
                     <div class="buttons is-flex is-flex-direction-column">
+                       <a style="width:100%;" href="{{ route('oauth.redirect', 'google') }}">
                         <button class="button social-btn is-outlined">
                             <span class="icon">
                                 <i class="fab fa-google"></i>
                             </span>
-                            <span>Continue with Google</span>
+                            <span> Continue with Google </span>
                         </button>
-                        <button class="button social-btn is-outlined">
+                       </a>
+
+                       <a style="width:100%;" href="{{ route('oauth.redirect', 'github') }}">
+                       <button class="button social-btn is-outlined">
                             <span class="icon">
                                 <i class="fab fa-github"></i>
                             </span>
                             <span>Continue with GitHub</span>
                         </button>
-                        <button class="button social-btn is-outlined">
-                            <span class="icon">
-                                <i class="fab fa-facebook"></i>
-                            </span>
-                            <span>Continue with Facebook</span>
-                        </button>
+                       </a>
                     </div>
 
                     <div class="divider">or</div>
