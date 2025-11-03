@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\Auth\ForgetPasswordController;
+use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\BookmarkController;
@@ -58,5 +60,15 @@ Route::get('user/{id}/followings', [FollowersList::class, 'followings'])->name('
 
 Route::get('/search', [SearchController::class, 'search']);
 
+// for oauth
 Route::get('/auth/{provider}/redirect', [OauthController::class, 'redirect'])->name('oauth.redirect');
 Route::get('/auth/{provider}/callback', [OauthController::class, 'callback'])->name('oauth.callback');
+
+// for forget password
+Route::get('/forgot-password', [ForgotPasswordController::class, 'showForgotForm'])->middleware('guest')->name('password.request');
+Route::post('/forgot-password', [ForgotPasswordController::class, 'sendResetLink'])->middleware('guest')->name('password.email');
+
+Route::get('/forgot-password/email-send/success', [ForgotPasswordController::class, 'showSuccessReset'])->middleware('guest')->name('password.email.send');
+
+Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->middleware('guest')->name('password.reset');
+Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->middleware('guest')->name('password.update');
