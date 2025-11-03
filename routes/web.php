@@ -1,14 +1,13 @@
 <?php
 
-use App\Http\Controllers\Auth\ForgetPasswordController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
 use App\Http\Controllers\BookmarkController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\OauthController;
 use App\Http\Controllers\FollowersList;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\Auth\OauthController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
