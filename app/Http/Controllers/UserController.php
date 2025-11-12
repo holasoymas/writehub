@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreUserRequest;
+use App\Models\Tag;
 use Illuminate\Routing\Controller;
 use App\Models\User;
 use Cloudinary\Cloudinary;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Validation\Rules\File;
 
 class UserController extends Controller
 {
@@ -72,12 +73,12 @@ class UserController extends Controller
                 $query->withCount(['likes', 'comments']);
             }
         ])
-            ->withCount(['followers', 'followings'])->find($user->id);
+            ->withCount(['followers', 'followings'])
+            ->find($user->id);
 
-        Log::info("User : ", $user->toArray());
-        // $user = $user->toArray();
+        $recommendedTags = (new Tag())->getRecommendedTags($user, 5);
 
-        return view("user.show", compact("user"));
+        return view("user.show", compact("user", "recommendedTags"));
     }
 
     /**
@@ -95,10 +96,29 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        if ($user->update($request->all())) {
+        $validatedUser = $request->validate([
+            'name' => 'required|string|min:3|max:20',
+            'bio' => 'max:50',
+            'profile_pic' => [File::image()->max('1mb')]
+        ]);
 
-            redirect("/");
+        if ($request->hasFile('profile_pic')) {
+
+            $cloudinary = new Cloudinary();
+
+            $upload = $cloudinary->uploadApi()->upload(
+
+                $request->file('profile_pic')->getRealPath(),
+
+                ['folder' => 'user_profiles'] // folder in cloudinary
+            );
+
+            $validatedUser['profile_pic'] = $upload['secure_url'];
         }
+
+        $user->update($validatedUser);
+
+        return to_route("user.show", ["user" => $user->id]);
     }
 
     /**
