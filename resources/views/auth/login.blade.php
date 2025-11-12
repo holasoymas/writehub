@@ -69,15 +69,6 @@
                             <span> Continue with Google </span>
                         </button>
                        </a>
-
-                       <a style="width:100%;" href="{{ route('oauth.redirect', 'github') }}">
-                       <button class="button social-btn is-outlined">
-                            <span class="icon">
-                                <i class="fab fa-github"></i>
-                            </span>
-                            <span>Continue with GitHub</span>
-                        </button>
-                       </a>
                     </div>
 
                     <div class="divider">or</div>
@@ -120,7 +111,12 @@
                         </div>
                     </form>
 
-                    <!-- Sign In Link -->
+                    <div class="has-text-centered mt-4">
+                        <p class="has-text-grey">Forgot Password ?
+                            <a href="{{ route('password.request') }}" class="has-text-success">Forgot Password</a>
+                        </p>
+                    </div>
+                        <!-- Sign In Link -->
                     <div class="has-text-centered mt-4">
                         <p class="has-text-grey">Don't an account?
                             <a href="{{ route('user.create') }}" class="has-text-success">Sign up</a>

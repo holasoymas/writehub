@@ -28,18 +28,6 @@
                             </span>
                             <span>Continue with Google</span>
                         </button>
-                        <button class="button social-btn is-outlined">
-                            <span class="icon">
-                                <i class="fab fa-github"></i>
-                            </span>
-                            <span>Continue with GitHub</span>
-                        </button>
-                        <button class="button social-btn is-outlined">
-                            <span class="icon">
-                                <i class="fab fa-facebook"></i>
-                            </span>
-                            <span>Continue with Facebook</span>
-                        </button>
                     </div>
 
                     <div class="divider">or</div>
