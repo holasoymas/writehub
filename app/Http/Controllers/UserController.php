@@ -78,7 +78,14 @@ class UserController extends Controller
 
         $recommendedTags = (new Tag())->getRecommendedTags($user, 5);
 
-        return view("user.show", compact("user", "recommendedTags"));
+        if (Auth::check()) {
+            $currUser = Auth::user();
+            $friendSuggestions = $currUser->getFriendSuggestions(4);
+        } else {
+            $friendSuggestions = User::getPopularUsers(4);
+        }
+
+        return view("user.show", compact("user", "recommendedTags", "friendSuggestions"));
     }
 
     /**
