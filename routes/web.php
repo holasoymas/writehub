@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\FollowersList;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\Auth\OauthController;
+use App\Http\Controllers\FeedController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
@@ -15,9 +16,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFollowController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
+Route::get('/', [FeedController::class, 'show'])->name('home');
 
 Route::get('login', [LoginController::class, "create"])->name("login");
 Route::post('login', [LoginController::class, "store"])->name("login.store");
