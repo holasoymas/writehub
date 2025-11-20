@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use App\Models\Tag;
+use App\Models\User;
 use App\Services\FeedRankingService;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -28,7 +29,13 @@ class FeedController extends Controller
 
         $tags = (new Tag())->getRecommendedTags($user, 10);
 
-        return view('welcome', compact("trendingBlogs", "rankingPosts", "tags"));
+        if (!$user) {
+            $recommendedFriends = (new User())->getFriendSuggestions(5);
+        } else {
+            $recommendedFriends = (new User())->getPopularUsers(5);
+        }
+
+        return view('welcome', compact("trendingBlogs", "rankingPosts", "tags", "recommendedFriends"));
     }
 
     public function getTrendingBlogs()
