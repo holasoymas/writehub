@@ -101,64 +101,62 @@
                                 <!-- Articles -->
                                 <div class="articles-section">
                                     @forelse ($user->posts as $item)
-
                                         @php
-                                            $blocks = $item->content; // already in array if casted in model
-                    $firstPara = collect($blocks)->firstWhere('type', 'paragraph');
-                    $firstImage = collect($blocks)->firstWhere('type', 'image');
-                @endphp
-
-                <div class="article-card" data-post-id="{{ $item->id }}">
-                    <header class="card-header">
-                        <p class="card-header-title">
-                        Post Title
-                        </p>
-                        <div class="card-header-icon" aria-label="options">
-                            <div class="dropdown is-right dropdown-article-action">
-                                <div class="dropdown-trigger">
-                                    <button class="button is-white" aria-haspopup="true" aria-controls="dropdown-options">
-                                        <span class="icon is-small">⋮</span>
-                                    </button>
-                                </div>
-                                <div class="dropdown-menu" id="dropdown-options" role="menu">
-                                    <div class="dropdown-content">
-                                        <a class="dropdown-item update">Update Post</a>
-                                        <a class="dropdown-item del">Delete Post</a>
-                                        <a class="dropdown-item report">Report</a>
+                                         $blocks = $item->content; // already in array if casted in model
+                                         $firstPara = collect($blocks)->firstWhere('type', 'paragraph');
+                                         $firstImage = collect($blocks)->firstWhere('type', 'image');
+                                    @endphp
+                                    <div class="article-card" data-post-id="{{ $item->id }}">
+                                        <header class="card-header">
+                                            <p class="card-header-title">
+                                            <img src="{{ $user->profile_pic }}" class="profile-avatar" style="width: 22px; height: 22px;" />
+                                            <a href="{{ route('user.show', $user->id)}}" style="margin-left:5px;color:black;">{{ $user->name }}</a>
+                                            </p>
+                                            <div class="card-header-icon" aria-label="options">
+                                                <div class="dropdown is-right dropdown-article-action">
+                                                    <div class="dropdown-trigger">
+                                                        <button class="button is-white" aria-haspopup="true" aria-controls="dropdown-options">
+                                                            <span class="icon is-small">⋮</span>
+                                                        </button>
+                                                    </div>
+                                                    <div class="dropdown-menu" id="dropdown-options" role="menu">
+                                                        <div class="dropdown-content">
+                                                            <a class="dropdown-item update">Update Post</a>
+                                                            <a class="dropdown-item del">Delete Post</a>
+                                                            <a class="dropdown-item report">Report</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </header>
+                                        <div class="columns">
+                                            <div class="column">
+                                                <div class="article-meta">
+                                                    @foreach ($item->tags as $tag)
+                                                        <span class="tag is-light">{{ $tag->name }}</span>
+                                                    @endforeach
+                                                </div>
+                                                <h2 class="title is-4"><a class="has-text-black" href="{{ route('posts.show', ['slug' => $item->slug]) }}">{{ $item->title }}</a></h2>
+                                                @if ($firstPara)
+                                                    <p class="subtitle is-6 has-text-grey truncate-2-lines">{{ $firstPara["data"]["text"] }}</p>
+                                                @endif
+                                                <div class="article-stats">
+                                                    <span><i style="margin-right:3px;" class="fa-solid fa-hands-clapping"></i>{{ $item->likes_count }}</span>
+                                                    <span><i style="margin-right:3px;" class="fas fa-comment"></i>{{ $item->comments_count }} </span>
+                                                </div>
+                                            </div>
+                                            <div class="column is-narrow">
+                                                @if ($firstImage)
+                                                    <img src="{{ $firstImage['data']['file']['url'] }}"
+                                                         alt="Article image" class="article-image">
+                                                     @endif
+                                            </div>
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                        </div>
-                    </header>
-                    <div class="columns">
-                        <div class="column">
-                            <div class="article-meta">
-                                @foreach ($item->tags as $tag)
-                                    <span class="tag is-light">{{ $tag->name }}</span>
-                                @endforeach
-                            </div>
-                            <h2 class="title is-4"><a class="has-text-black" href="{{ route('posts.show', ['slug' => $item->slug]) }}">{{ $item->title }}</a></h2>
-                            @if ($firstPara)
-                                <p class="subtitle is-6 has-text-grey truncate-2-lines">{{ $firstPara["data"]["text"] }}</p>
-                            @endif
-                            <div class="article-stats">
-                                <span><i class="fas fa-star"></i> Mar 15</span>
-                                <span><i class="fas fa-clap"></i> 3.6K</span>
-                                <span><i class="fas fa-comment"></i> 151</span>
-                            </div>
-                        </div>
-                        <div class="column is-narrow">
-                            @if ($firstImage)
-                                <img src="{{ $firstImage['data']['file']['url'] }}"
-                                     alt="Article" class="article-image">
-                                 @endif
-                        </div>
-                    </div>
-                </div>
 
-            @empty
-                <p> No post found </p>
-            @endforelse
+                                @empty
+                                    <h1> No post found </h1>
+                                @endforelse
                                 </div>
                             </div>
 
@@ -202,45 +200,38 @@
                             <div class="sidebar">
                                 <div class="box">
                                     <h3 class="title is-6">Recommended topics</h3>
+
+                                    <!-- rendering tags dynamic -->
                                     <div class="tags">
-                                        <span class="tag is-light">JavaScript</span>
-                                        <span class="tag is-light">React</span>
-                                        <span class="tag is-light">Web Development</span>
-                                        <span class="tag is-light">Programming</span>
-                                        <span class="tag is-light">Technology</span>
+                                        @foreach ($recommendedTags as $tag)
+                                            <span class="tag is-light">{{ $tag->name }}</span>
+                                        @endforeach
                                     </div>
+
                                     <a href="#" class="has-text-success is-size-7">See all topics</a>
                                 </div>
 
                                 <div class="box">
                                     <h3 class="title is-6">Who to follow</h3>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="https://images.unsplash.com/photo-1494790108755-2616b6df47c6?w=100&h=100&fit=crop&crop=face"
-                                                 alt="User" class="following-avatar">
+                                    @foreach ($friendSuggestions as $suggestion)
+                                        <div class="media">
+                                            <div class="media-left">
+                                                <img src="{{ $suggestion->profile_pic }}"
+                                                     alt="User" class="following-avatar">
+                                            </div>
+                                            <div class="media-content">
+                                                <p class="has-text-weight-semibold is-size-7">
+                                                   <a style="color:black;" href={{ route('user.show', $suggestion->id) }}>
+                                                    {{ $suggestion->name }}
+                                                   </a>
+                                                </p>
+                                                <p class="is-size-7 has-text-grey">{{ $suggestion?->bio }}</p>
+                                            </div>
+                                            <div class="media-right">
+                                                <button class="button is-small is-outlined" data-user-id="{{$suggestion->id}}">Follow</button>
+                                            </div>
                                         </div>
-                                        <div class="media-content">
-                                            <p class="has-text-weight-semibold is-size-7">Sarah Johnson</p>
-                                            <p class="is-size-7 has-text-grey">UX Designer & Writer</p>
-                                        </div>
-                                        <div class="media-right">
-                                            <button class="button is-small is-outlined">Follow</button>
-                                        </div>
-                                    </div>
-                                    <div class="media">
-                                        <div class="media-left">
-                                            <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&h=100&fit=crop&crop=face"
-                                                 alt="User" class="following-avatar">
-                                        </div>
-                                        <div class="media-content">
-                                            <p class="has-text-weight-semibold is-size-7">Mike Chen</p>
-                                            <p class="is-size-7 has-text-grey">Frontend Developer</p>
-                                        </div>
-                                        <div class="media-right">
-                                            <button class="button is-small is-outlined">Follow</button>
-                                        </div>
-                                    </div>
-                                    <a href="#" class="has-text-success is-size-7">See all suggestions</a>
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
@@ -318,21 +309,20 @@
                 <!-- Footer -->
                 <x-footer />
 
-                    <script>
-
-                        function switchTab(tabName) {
+                <script>
+                    function switchTab(tabName) {
                             // hide all contents
-                            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('is-active'));
+                        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('is-active'));
 
-                            // remove active state from all tabs
-                            document.querySelectorAll('.tabs li').forEach(el => el.classList.remove('is-active'));
+                        // remove active state from all tabs
+                        document.querySelectorAll('.tabs li').forEach(el => el.classList.remove('is-active'));
 
-                            // show selected content
-                            document.getElementById(tabName).classList.add('is-active');
+                        // show selected content
+                        document.getElementById(tabName).classList.add('is-active');
 
-                            // set active tab
-                            document.querySelector(`.tabs li[data-tab="${tabName}"]`).classList.add('is-active');
-                        }
-                    </script>
+                        // set active tab
+                        document.querySelector(`.tabs li[data-tab="${tabName}"]`).classList.add('is-active');
+                    }
+                </script>
     </body>
 </html>
