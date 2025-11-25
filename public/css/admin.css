@@ -1,0 +1,89 @@
+/* custom admin drawer and layout tweaks */
+.admin-wrapper {
+    display: flex;
+    min-height: calc(100vh - 3.25rem);
+    /* account navbar */
+}
+
+/* Drawer is hidden off-canvas on desktop by default; will slide in via .open class */
+.drawer {
+    position: fixed;
+    left: -320px;
+    top: 3.25rem;
+    width: 300px;
+    bottom: 0;
+    background: #fff;
+    border-right: 1px solid #ececec;
+    padding: 1rem;
+    box-shadow: 0 8px 30px rgba(10, 10, 10, 0.06);
+    transition: left 260ms cubic-bezier(.2, .8, .2, 1);
+    z-index: 1200;
+    overflow-y: auto;
+}
+
+/* when open */
+.drawer.open {
+    left: 0;
+}
+
+/* drawer header */
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.drawer-title {
+    font-weight: 700;
+    font-size: 1.05rem;
+}
+
+/* main content pushes right slightly when drawer open (optional) */
+.admin-main {
+    flex: 1;
+    margin-left: 0;
+    transition: margin-left 260ms;
+    width: 100%;
+    padding-top: 1rem;
+}
+
+/* active link */
+.menu-list a.is-active {
+    background: #f5f5f5;
+    border-left: 3px solid #00d1b2;
+    color: #363636;
+}
+
+/* small screens: drawer behaves like overlay */
+@media (max-width: 1024px) {
+    .drawer {
+        width: 85%;
+        left: -100%;
+    }
+
+    .drawer.open {
+        left: 0;
+    }
+}
+
+/* Buttons spacing */
+.button+.button {
+    margin-left: .5rem;
+}
+
+/* delete button style */
+.js-delete-btn {
+    position: relative;
+}
+
+/* inline forms look */
+.is-inline-block {
+    display: inline-block;
+}
+
+/* small niceties */
+.table td,
+.table th {
+    vertical-align: middle;
+}
