@@ -41,6 +41,17 @@
                     </a>
                 </div>
 
+                @auth
+                <div class="navbar-item notification-bell-wrapper">
+                    <a href="{{ route('announcements') }}" class="notification-bell">
+                        <i class="fas fa-bell"></i>
+                        @unless (Auth::user()->unreadNotifications->isEmpty())
+                            <span class="notification-badge">{{ Auth::user()->unreadNotifications->count() }}</span>
+                        @endunless
+                    </a>
+                </div>
+                @endauth
+
                 <!-- Profile / Auth Dropdown -->
                 <div class="navbar-item">
                     <div class="dropdown profile-dropdown">
