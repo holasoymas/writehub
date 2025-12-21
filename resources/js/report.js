@@ -109,9 +109,16 @@ document.addEventListener('DOMContentLoaded', () => {
             const reason = document.querySelector("input[name='report_reason']:checked")?.value;
 
             try {
-                const data = await axios.post('/report', { postId, reason, other });
+                await axios.post('/report', { postId, reason, other });
+
+                reportModal.classList.remove('is-active');
+
+                resetReportModal();
 
             } catch (err) {
+
+                reportModal.classList.remove('is-active');
+                resetReportModal();
 
                 if (err.response) {
 
