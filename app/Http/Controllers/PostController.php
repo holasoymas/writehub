@@ -222,7 +222,9 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        Post::findOrFail($id)->delete();
+
+        return back()->with('success', 'Post deleted successfully');
     }
 
     private function attachLikeMeta($comment)
