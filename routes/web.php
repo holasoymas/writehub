@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Auth\ForgotPasswordController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\LogoutController;
@@ -14,7 +15,9 @@ use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFollowController;
+use App\Models\Broadcast;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 Route::get('/', [FeedController::class, 'show'])->name('home');
 
@@ -45,6 +48,20 @@ Route::middleware(["auth"])->group(function () {
     Route::post('/report', [ReportController::class, 'report'])->name('post.report');
 
     Route::post('/logout', [LogoutController::class, 'logout'])->name('logout');
+
+    Route::get('/announcements', function () {
+
+        $user = Auth::user();
+
+        // mark nuread notification all read
+        $user->unreadNotifications()->update(['read_at' => now()]);
+
+        $broadcasts = Broadcast::orderBy('created_at', 'desc')
+            ->get()
+            ->groupBy(fn($broadcast) => $broadcast->send_at->format('Y-m-d'));
+
+        return view("announcements", compact("broadcasts"));
+    })->name('announcements');
 });
 
 // use it at last to prevent route shadowing
@@ -70,3 +87,25 @@ Route::get('/forgot-password/email-send/success', [ForgotPasswordController::cla
 
 Route::get('/reset-password/{token}', [ForgotPasswordController::class, 'showResetForm'])->middleware('guest')->name('password.reset');
 Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'])->middleware('guest')->name('password.update');
+
+// admin login
+Route::get('/admin/login', fn() => view('admin.login'))->name('admin.login');
+
+Route::prefix('admin')
+    // ->middleware(['auth', 'admin']) // adjust middleware: auth + gate/role
+    ->name('admin.')
+    ->group(function () {
+
+        Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+
+        Route::get('/users', [AdminController::class, 'users'])->name('users');
+
+        Route::get('/posts', [AdminController::class, 'posts'])->name('posts');
+
+        Route::get('/reports', [AdminController::class, 'reports'])->name('reports');
+
+        Route::get('/broadcast', [AdminController::class, 'broadcast'])->name('broadcast');
+        Route::post('/broadcast', [AdminController::class, 'sendBroadcast'])->name('broadcast.send');
+
+        Route::get('/analytics', [AdminController::class, 'analytics'])->name('analytics');
+    });
