@@ -45,7 +45,7 @@ class UserPolicy
      */
     public function delete(User $user, User $model): bool
     {
-        return false;
+        return $user->id === $model->id || $user->is_admin;
     }
 
     /**
@@ -53,7 +53,7 @@ class UserPolicy
      */
     public function restore(User $user, User $model): bool
     {
-        return false;
+        return $user->id === $model->id || $user->is_admin;
     }
 
     /**
@@ -61,7 +61,7 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        return false;
+        return $user->id === $model->id || $user->is_admin;
     }
 
     public function follow(User $user, User $model): bool
