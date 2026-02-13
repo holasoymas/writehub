@@ -40,6 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (e.target.matches('.dropdown-item.report')) {
 
             const postId = e.target.closest('.article-card').dataset.postId;
+            console.log(postId);
 
             // remove the post action dropdown as report model will appear
             e.target.closest('.dropdown-article-action.is-active').classList.remove('is-active');

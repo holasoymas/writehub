@@ -13,6 +13,7 @@
 
         @vite(['resources/js/dropdown.js'])
         @vite(['resources/js/searchInput.js'])
+        @vite(['resources/js/report.js'])
 
     </head>
     <body>
@@ -98,9 +99,20 @@
                     </div>
                     <div class="dropdown-menu" id="dropdown-options" role="menu">
                         <div class="dropdown-content">
-                            <a class="dropdown-item update">Update Post</a>
-                            <a class="dropdown-item del">Delete Post</a>
-                            <a class="dropdown-item report">Report</a>
+                            @if (Auth::id() == $item->user->id)
+                                <a href="{{route('posts.edit', $item->id)}}" class="dropdown-item update">Update Post</a>
+                                <form action="{{ route('posts.destroy', $item->id) }}"
+                                      method="POST"
+                                      class="dropdown-delete-form"
+                                      onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                      @csrf
+                                      @method('DELETE')
+                                      <button type="submit" class="dropdown-item del dropdown-delete-btn">Delete Post</button>
+                                </form>
+
+                            @else
+                                <a class="dropdown-item report">Report</a>
+                            @endif
                         </div>
                     </div>
                 </div>
@@ -171,6 +183,45 @@
 
             <!-- Footer -->
             <x-footer />
+
+                {{-- Report modal --}}
+                <div class="modal" id="report-modal">
+                    <div class="modal-background"></div>
+                    <div class="modal-card">
+                        <header class="modal-card-head">
+                            <p class="modal-card-title">Report</p>
+                            <button class="delete" aria-label="close"></button>
+                        </header>
+                        <section class="modal-card-body">
+
+                            <div class="control report-reason">
+                                <label class="radio is-medium">
+                                    <input type="radio" name="report_reason" value="misinformation" />
+                                    Misinformation
+                                </label> <br />
+                                <label class="radio">
+                                    <input type="radio" name="report_reason" value="low_quality"  />
+                                    Low Quality
+                                </label> <br />
+                                <label class="radio" >
+                                    <input type="radio" name="report_reason" value="sexual_content" />
+                                    Sexual Content
+                                </label><br />
+                                <label class="radio" >
+                                    <input type="radio" name="report_reason" value="other" id="other-reason" />
+                                    Other
+                                </label><br />
+                                <input type="text" class="input" placeholder="Specify reason" name="other-reason" id="other-reason-input" style="display:none;" />
+                            </div>
+                        </section>
+                        <footer class="modal-card-foot">
+                            <div class="buttons">
+                                <button class="button is-success">Report</button>
+                                <button class="button">Cancel</button>
+                            </div>
+                        </footer>
+                    </div>
+                </div>
 
                 <script>
                     // Mobile navbar toggle

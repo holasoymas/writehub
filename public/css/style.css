@@ -47,6 +47,26 @@ input[type="radio"] {
     color: black;
 }
 
+/* remove all native button styling */
+.dropdown-delete-btn {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0.25rem 1rem;
+    /* match dropdown spacing */
+    width: 100%;
+    text-align: left;
+    font: inherit;
+    color: inherit;
+    cursor: pointer;
+}
+
+/* prevent the form from breaking layout */
+.dropdown-delete-form {
+    margin: 0;
+    padding: 0;
+}
+
 /* Notification badge */
 .notification-badge {
     position: absolute;

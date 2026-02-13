@@ -121,9 +121,20 @@
                                                     </div>
                                                     <div class="dropdown-menu" id="dropdown-options" role="menu">
                                                         <div class="dropdown-content">
-                                                            <a class="dropdown-item update">Update Post</a>
-                                                            <a class="dropdown-item del">Delete Post</a>
-                                                            <a class="dropdown-item report">Report</a>
+                                                            @if (Auth::id() == $item->user->id)
+                                                                <a href="{{route('posts.edit', $item->id)}}" class="dropdown-item update">Update Post</a>
+                                                                <form action="{{ route('posts.destroy', $item->id) }}"
+                                                                      method="POST"
+                                                                      class="dropdown-delete-form"
+                                                                      onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                                                      @csrf
+                                                                      @method('DELETE')
+                                                                 <button type="submit" class="dropdown-item del dropdown-delete-btn">Delete Post</button>
+                                                                </form>
+
+                                                            @else
+                                                                <a class="dropdown-item report">Report</a>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </div>
