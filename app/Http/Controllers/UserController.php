@@ -68,13 +68,18 @@ class UserController extends Controller
     public function show(User $user)
     {
         $user = User::with([
-            'posts.tags',
             'posts' => function ($query) {
-                $query->withCount(['likes', 'comments']);
+                $query->with('tags')
+                    ->withCount(['likes', 'comments']);
             }
         ])
             ->withCount(['followers', 'followings'])
             ->find($user->id);
+
+        $bookmarkedUserPosts = $user->bookmarkedPosts()
+            ->with(['tags'])
+            ->withCount(['likes', 'comments'])
+            ->get();
 
         $recommendedTags = (new Tag())->getRecommendedTags($user, 5);
 
@@ -85,7 +90,7 @@ class UserController extends Controller
             $friendSuggestions = User::getPopularUsers(4);
         }
 
-        return view("user.show", compact("user", "recommendedTags", "friendSuggestions"));
+        return view("user.show", compact("user", "bookmarkedUserPosts", "recommendedTags", "friendSuggestions"));
     }
 
     /**
