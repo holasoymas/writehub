@@ -4,23 +4,20 @@ import { showErrorBox } from "./error-box";
 // for post dropdown
 document.addEventListener('DOMContentLoaded', () => {
 
-    const articleContainer = document.querySelector('.articles-section');
-
     //open a dropdown for post actions
-    articleContainer.addEventListener('click', (e) => {
+    document.addEventListener('click', (e) => {
 
-        if (e.target.closest('.dropdown-trigger button')) {
+        const dropdownButton = e.target.closest('.dropdown-trigger button');
 
-            // remove all the dropdowns
-            const otherDropdown = articleContainer.querySelectorAll(".dropdown-article-action");
-            otherDropdown.forEach(d => d.classList.remove('is-active'))
+        if (!dropdownButton) return;
 
-            const dropdown = e.target.closest('.dropdown-article-action');
+        const dropdown = dropdownButton.closest('.dropdown-article-action');
 
-            console.log(dropdown)
+        document
+            .querySelectorAll('.dropdown-article-action')
+            .forEach(d => d.classList.remove('is-active'));
 
-            dropdown.classList.toggle('is-active');
-        }
+        dropdown.classList.toggle('is-active');
     });
 
     // Close dropdown(on post action) if clicking outside
@@ -35,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // open the report from and close the post dropdown action
-    articleContainer.addEventListener('click', async (e) => {
+    document.addEventListener('click', async (e) => {
 
         if (e.target.matches('.dropdown-item.report')) {
 
