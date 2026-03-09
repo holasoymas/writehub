@@ -37,6 +37,9 @@ Route::middleware(["auth"])->group(function () {
     Route::post('/follow/{user}', [UserFollowController::class, 'follow'])->name('user.follow');
     Route::delete('/unfollow/{user}', [UserFollowController::class, 'unfollow'])->name('user.unfollow');
 
+    // for sidebar btns
+    Route::post('/follow/toggle/{id}', [UserFollowController::class, 'toggle']);
+
     Route::resource('posts', PostController::class)->except(['show']);
 
     Route::post('/comment/create', [CommentController::class, "create"]);
