@@ -10,8 +10,17 @@ class FollowersList extends Controller
     public function followers($id)
     {
         $user = User::findOrFail($id);
+        $authUser = Auth::user();
 
-        $followers = $user->followers;
+        $followers = $user->followers->map(function ($follower) use ($authUser) {
+
+            $follower->is_following = $authUser
+                ->followings()
+                ->where('followed_id', $follower->id)
+                ->exists();
+
+            return $follower;
+        });
 
         return response()->json([
             'followers' => $followers
@@ -21,8 +30,17 @@ class FollowersList extends Controller
     public function followings($id)
     {
         $user = User::findOrFail($id);
+        $authUser = Auth::user();
 
-        $followings = $user->followings;
+        $followings = $user->followings->map(function ($following) use ($authUser) {
+
+            $following->is_following = $authUser
+                ->followings()
+                ->where('followed_id', $following->id)
+                ->exists();
+
+            return $following;
+        });
 
         return response()->json([
             'followings' => $followings

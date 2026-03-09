@@ -30,9 +30,9 @@ class FeedController extends Controller
         $tags = (new Tag())->getRecommendedTags($user, 10);
 
         if (!$user) {
-            $recommendedFriends = (new User())->getFriendSuggestions(5);
+            $recommendedFriends = User::getPopularUsers(5);
         } else {
-            $recommendedFriends = (new User())->getPopularUsers(5);
+            $recommendedFriends = $user->getFriendSuggestions(5);
         }
 
         return view('welcome', compact("trendingBlogs", "rankingPosts", "tags", "recommendedFriends"));

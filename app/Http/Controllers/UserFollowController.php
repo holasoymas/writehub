@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
 class UserFollowController extends Controller
@@ -25,5 +26,26 @@ class UserFollowController extends Controller
         request()->user()->followings()->detach($user->id);
 
         return back();
+    }
+
+    public function toggle(int $id)
+    {
+        $user = Auth::user();
+
+        if ($user->followings()->where('followed_id', $id)->exists()) {
+
+            $user->followings()->detach($id);
+
+            return response()->json([
+                'following' => false
+            ]);
+        } else {
+
+            $user->followings()->attach($id);
+
+            return response()->json([
+                'following' => true
+            ]);
+        }
     }
 }
