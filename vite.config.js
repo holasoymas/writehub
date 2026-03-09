@@ -15,6 +15,7 @@ const frontendFiles = [
     'resources/js/error-box.js',
     'resources/js/searchInput.js',
     'resources/js/report.js',
+    'resources/js/follow-unfollow.js'
 ]
 
 export default defineConfig({
