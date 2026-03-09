@@ -2,7 +2,7 @@ import axios from "axios";
 
 document.addEventListener("DOMContentLoaded", () => {
     // General modal open function
-    function openModal(modalId, users, buttonType) {
+    function openModal(modalId, users) {
 
         const modal = document.getElementById(modalId);
 
@@ -19,11 +19,15 @@ document.addEventListener("DOMContentLoaded", () => {
           <p class="is-size-7 has-text-grey">${user.bio || ""}</p>
         </div>
         <div class="media-right">
-          <button class="button is-small ${buttonType.class}">${buttonType.text}</button>
+          <button class="follow-btn ${user.is_following ? 'is-following' : ''}"
+                data-user-id="${user.id}">
+                    ${user.is_following ? 'Following' : 'Follow'}
+          </button>
         </div>
       </div>
     `).join("");
 
+        // <button class="button is-small ${buttonType.class}">${buttonType.text}</button>
         modal.classList.add("is-active");
 
         document.documentElement.classList.add("is-clipped"); // 🔒 disable background scroll
@@ -59,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.log(followers);
 
-            openModal("followersModal", followers.data.followers, { text: "Follow back", class: "is-outlined" });
+            openModal("followersModal", followers.data.followers);
 
         } catch (err) {
 
@@ -80,7 +84,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             console.log(following);
 
-            openModal("followingModal", following.data.followings, { text: "Unfollow", class: "is-danger is-outlined" });
+            openModal("followingModal", following.data.followings);
 
         } catch (err) {
 

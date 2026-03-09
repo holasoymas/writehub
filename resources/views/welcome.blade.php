@@ -12,6 +12,7 @@
         <link rel="stylesheet" href="{{ asset('css/profile.dropdown.css') }}">
 
         @vite(['resources/js/dropdown.js'])
+        @vite(['resources/js/follow-unfollow.js'])
         @vite(['resources/js/searchInput.js'])
         @vite(['resources/js/report.js'])
 
@@ -155,9 +156,9 @@
                                     <a href="#" class="topic-tag">{{ $tag->name }}</a>
                                 @endforeach
                             </div>
-                            <div style="margin-top: 1rem;">
-                                <a href="#" style="color: #1a8917; font-size: 0.875rem; font-weight: 500;">See more topics</a>
-                            </div>
+                            {{-- <div style="margin-top: 1rem;"> --}}
+                            {{--     <a href="#" style="color: #1a8917; font-size: 0.875rem; font-weight: 500;">See more topics</a> --}}
+                            {{-- </div> --}}
                         </div>
 
                         <!-- Who to Follow -->

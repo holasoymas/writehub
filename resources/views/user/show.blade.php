@@ -9,6 +9,7 @@
 
         <link rel="stylesheet" href="{{ asset('css/show.profile.css') }}">
         <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/welcome.css') }}">
         <link rel="stylesheet" href="{{ asset('css/profile.dropdown.css') }}">
         <link rel="stylesheet" href="{{ asset('css/error-box.css') }}">
         <script type="module" src="{{ asset('js/navbar.js') }}"></script>
@@ -16,6 +17,7 @@
 
         @vite(['resources/js/dropdown.js'])
         @vite(['resources/js/followers.js'])
+        @vite(['resources/js/follow-unfollow.js'])
         @vite(['resources/js/searchInput.js'])
         @vite(['resources/js/report.js'])
     </head>
@@ -28,7 +30,9 @@
 
                 <script>
                     const data = @json($user->posts);
+                    const book = @json($bookmarkedUserPosts);
                     console.log(data)
+                    console.log(book)
                 </script>
 
                 <div class="container">
@@ -90,120 +94,23 @@
                             <div class="tabs">
                                 <ul>
                                     <li class="is-active" data-tab="home-content"><a onclick="switchTab('home-content')">Home</a></li>
-                                    <li data-tab="lists-content"><a onclick="switchTab('lists-content')">Lists</a></li>
-                                    <li data-tab="about-content"><a onclick="switchTab('about-content')">About</a></li>
+                                    @if ($user->id == Auth::id())
+                                        <li data-tab="lists-content"><a onclick="switchTab('lists-content')">Favorite Posts</a></li>
+                                    @endif
                                 </ul>
                             </div>
 
                             <!-- Home Tab Content -->
                             <div id="home-content" class="tab-content is-active">
-
                                 <!-- Articles -->
-                                <div class="articles-section">
-                                    @forelse ($user->posts as $item)
-                                        @php
-                                         $blocks = $item->content; // already in array if casted in model
-                                         $firstPara = collect($blocks)->firstWhere('type', 'paragraph');
-                                         $firstImage = collect($blocks)->firstWhere('type', 'image');
-                                    @endphp
-                                    <div class="article-card" data-post-id="{{ $item->id }}">
-                                        <header class="card-header">
-                                            <p class="card-header-title">
-                                            <img src="{{ $user->profile_pic }}" class="profile-avatar" style="width: 22px; height: 22px;" />
-                                            <a href="{{ route('user.show', $user->id)}}" style="margin-left:5px;color:black;">{{ $user->name }}</a>
-                                            </p>
-                                            <div class="card-header-icon" aria-label="options">
-                                                <div class="dropdown is-right dropdown-article-action">
-                                                    <div class="dropdown-trigger">
-                                                        <button class="button is-white" aria-haspopup="true" aria-controls="dropdown-options">
-                                                            <span class="icon is-small">⋮</span>
-                                                        </button>
-                                                    </div>
-                                                    <div class="dropdown-menu" id="dropdown-options" role="menu">
-                                                        <div class="dropdown-content">
-                                                            @if (Auth::id() == $item->user->id)
-                                                                <a href="{{route('posts.edit', $item->id)}}" class="dropdown-item update">Update Post</a>
-                                                                <form action="{{ route('posts.destroy', $item->id) }}"
-                                                                      method="POST"
-                                                                      class="dropdown-delete-form"
-                                                                      onsubmit="return confirm('Are you sure you want to delete this post?');">
-                                                                      @csrf
-                                                                      @method('DELETE')
-                                                                 <button type="submit" class="dropdown-item del dropdown-delete-btn">Delete Post</button>
-                                                                </form>
-
-                                                            @else
-                                                                <a class="dropdown-item report">Report</a>
-                                                            @endif
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </header>
-                                        <div class="columns">
-                                            <div class="column">
-                                                <div class="article-meta">
-                                                    @foreach ($item->tags as $tag)
-                                                        <span class="tag is-light">{{ $tag->name }}</span>
-                                                    @endforeach
-                                                </div>
-                                                <h2 class="title is-4"><a class="has-text-black" href="{{ route('posts.show', ['slug' => $item->slug]) }}">{{ $item->title }}</a></h2>
-                                                @if ($firstPara)
-                                                    <p class="subtitle is-6 has-text-grey truncate-2-lines">{{ $firstPara["data"]["text"] }}</p>
-                                                @endif
-                                                <div class="article-stats">
-                                                    <span><i style="margin-right:3px;" class="fa-solid fa-hands-clapping"></i>{{ $item->likes_count }}</span>
-                                                    <span><i style="margin-right:3px;" class="fas fa-comment"></i>{{ $item->comments_count }} </span>
-                                                </div>
-                                            </div>
-                                            <div class="column is-narrow">
-                                                @if ($firstImage)
-                                                    <img src="{{ $firstImage['data']['file']['url'] }}"
-                                                         alt="Article image" class="article-image">
-                                                     @endif
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                @empty
-                                    <h1> No post found </h1>
-                                @endforelse
-                                </div>
+                                    <x-list-post :userPosts="$user->posts" />
                             </div>
 
                             <!-- Lists Tab Content -->
                             <div id="lists-content" class="tab-content">
-                                <div class="empty-state">
-                                    <i class="fas fa-list"></i>
-                                    <h3 class="title is-4">No lists yet</h3>
-                                    <p>Create reading lists to organize your favorite stories</p>
-                                    <button class="button is-primary is-outlined mt-4">Create your first list</button>
-                                </div>
+                                    <x-list-post :userPosts="$bookmarkedUserPosts" />
                             </div>
 
-                            <!-- About Tab Content -->
-                            <div id="about-content" class="tab-content">
-                                <div class="content">
-                                    <h3 class="title is-4">About Adarsh Gupta</h3>
-                                    <p>
-                                    I'm a passionate software engineer with over 5 years of experience in JavaScript development.
-                                    I love sharing knowledge through technical writing and helping developers grow their skills.
-                                    </p>
-                                    <p>
-                                    When I'm not coding, you can find me exploring new technologies, contributing to open source projects,
-                                    or writing about the latest trends in web development.
-                                    </p>
-                                    <h4 class="title is-5">Skills & Interests</h4>
-                                    <div class="tags">
-                                        <span class="tag is-primary">JavaScript</span>
-                                        <span class="tag is-primary">React</span>
-                                        <span class="tag is-primary">Node.js</span>
-                                        <span class="tag is-primary">Python</span>
-                                        <span class="tag is-primary">Technical Writing</span>
-                                        <span class="tag is-primary">Open Source</span>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Sidebar -->
@@ -219,7 +126,7 @@
                                         @endforeach
                                     </div>
 
-                                    <a href="#" class="has-text-success is-size-7">See all topics</a>
+                                    {{-- <a href="#" class="has-text-success is-size-7">See all topics</a> --}}
                                 </div>
 
                                 <div class="box">
@@ -239,7 +146,8 @@
                                                 <p class="is-size-7 has-text-grey">{{ $suggestion?->bio }}</p>
                                             </div>
                                             <div class="media-right">
-                                                <button class="button is-small is-outlined" data-user-id="{{$suggestion->id}}">Follow</button>
+                                                {{-- <button class="button is-small is-outlined" data-user-id="{{$suggestion->id}}">Follow</button> --}}
+                                                <button class="follow-btn" data-user-id="{{ $suggestion->id }}">Follow</button>
                                             </div>
                                         </div>
                                     @endforeach

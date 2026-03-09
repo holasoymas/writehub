@@ -176,6 +176,18 @@
     color: white;
 }
 
+/* FOLLOWING state */
+.follow-btn.is-following {
+    background: #1A8917;
+    color: white;
+}
+
+/* hover when FOLLOWING */
+.follow-btn.is-following:hover {
+    background: none;
+    color: #1A8917;
+}
+
 /* Mobile Responsiveness */
 @media (max-width: 768px) {
     .hero-title {
