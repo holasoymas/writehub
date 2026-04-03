@@ -32,8 +32,7 @@ class AdminController extends Controller
 
     public function users()
     {
-        $users = User::paginate(8);
-
+        $users = User::withCount('posts')->latest()->paginate(8);
         return view('admin.users', compact('users'));
     }
 
