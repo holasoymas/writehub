@@ -11,7 +11,7 @@ use App\Models\Report;
 use App\Notifications\Announcement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Notification;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Auth;
 
 class AdminController extends Controller
 {
@@ -108,10 +108,63 @@ class AdminController extends Controller
 
     public function analytics()
     {
-        // generate small data set for cards / charts
-        $usersPerDay = User::selectRaw('DATE(created_at) as day, count(*) as c')
-            ->groupBy('day')->orderBy('day', 'desc')->limit(7)->get()->reverse();
+        $totalUsers    = User::count();
+        $totalPosts    = Post::count();
+        $totalComments = Comment::count();
+        $reportedPosts = Report::count();
 
-        return view('admin.analytics', compact('usersPerDay'));
+        // Posts per month (last 6 months)
+        $postsPerMonth = Post::selectRaw("DATE_FORMAT(created_at, '%b %Y') as month_year, DATE_FORMAT(created_at, '%b') as month, COUNT(*) as count")
+            ->where('created_at', '>=', now()->subMonths(6))
+            ->groupByRaw("DATE_FORMAT(created_at, '%b %Y'), DATE_FORMAT(created_at, '%b')")
+            ->orderByRaw("MIN(created_at) ASC")
+            ->pluck('count', 'month');
+
+        // Top 5 authors by post count
+        $topAuthors = User::withCount('posts')
+            ->orderByDesc('posts_count')
+            ->take(3)
+            ->get();
+
+        // Recent activity (latest 5 posts)
+        $recentPosts = Post::with('user')->latest()->take(5)->get();
+
+        return view('admin.analytics', compact(
+            'totalUsers',
+            'totalPosts',
+            'totalComments',
+            'reportedPosts',
+            'postsPerMonth',
+            'topAuthors',
+            'recentPosts'
+        ));
+    }
+
+    public function login(Request $request)
+    {
+        $credentials = $request->validate([
+            'email'    => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($credentials, $request->boolean('remember'))) {
+            if (Auth::user()->is_admin) {
+                $request->session()->regenerate();
+                return redirect()->route('admin.dashboard');
+            }
+            // logged in but not admin
+            Auth::logout();
+            return back()->withErrors(['email' => 'You are not authorized as admin.']);
+        }
+
+        return back()->withErrors(['email' => 'Invalid credentials.']);
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('admin.login');
     }
 }
