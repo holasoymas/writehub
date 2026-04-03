@@ -93,9 +93,11 @@ Route::post('/reset-password', [ForgotPasswordController::class, 'resetPassword'
 
 // admin login
 Route::get('/admin/login', fn() => view('admin.login'))->name('admin.login');
+Route::post('/admin/login', [AdminController::class, 'login'])->name('admin.login.post');
+Route::post('/admin/logout', [AdminController::class, 'logout'])->name('admin.logout');
 
 Route::prefix('admin')
-    // ->middleware(['auth', 'admin']) // adjust middleware: auth + gate/role
+    ->middleware(['auth', 'admin']) // adjust middleware: auth + gate/role
     ->name('admin.')
     ->group(function () {
 
