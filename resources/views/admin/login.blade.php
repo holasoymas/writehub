@@ -71,6 +71,11 @@
             <i class="fas fa-blog"></i>
             <h1 class="title is-4 mb-0">Admin Login</h1>
             <p class="subtitle is-6 mt-2">Welcome back! Please login to continue</p>
+            @if ($errors->any())
+                <div class="notification is-danger is-light mb-4">
+                    {{ $errors->first() }}
+                </div>
+            @endif
         </div>
 
         <div class="login-body">
@@ -97,12 +102,6 @@
                     </div>
                 </div>
 
-                <div class="field">
-                    <label class="checkbox">
-                        <input type="checkbox" name="remember">
-                        Remember me
-                    </label>
-                </div>
 
                 <div class="field">
                     <button class="button is-primary is-fullwidth" type="submit">
@@ -113,9 +112,6 @@
                     </button>
                 </div>
 
-                <div class="has-text-centered mt-4">
-                    <a href="#" class="has-text-grey">Forgot Password?</a>
-                </div>
             </form>
         </div>
     </div>

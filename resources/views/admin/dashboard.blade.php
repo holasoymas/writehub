@@ -40,7 +40,7 @@
                                     <td>{{ $p->user->name ?? '—' }}</td>
                                     <td>{{ $p->created_at->diffForHumans() }}</td>
                                     <td>
-                                        <a class="button is-small is-outlined" href="{{ route('admin.posts', $p) }}">View</a>
+                                        <a class="button is-small is-outlined" href="{{ route('posts.show', $p->slug) }}">View</a>
                                     </td>
                                 </tr>
                             @endforeach

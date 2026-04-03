@@ -76,33 +76,6 @@
         </div>
     </div>
 
-    <div class="column is-4">
-        <div class="card mb-4">
-            <header class="card-header">
-                <p class="card-header-title">Broadcast Statistics</p>
-            </header>
-            <div class="card-content">
-                <div class="content">
-                    <div class="mb-4">
-                        <p class="heading">Total Broadcasts Sent</p>
-                        <p class="title is-4">142</p>
-                    </div>
-                    <div class="mb-4">
-                        <p class="heading">This Month</p>
-                        <p class="title is-4">12</p>
-                    </div>
-                    <div class="mb-4">
-                        <p class="heading">Average Open Rate</p>
-                        <p class="title is-4">68.5%</p>
-                    </div>
-                    <div>
-                        <p class="heading">Last Broadcast</p>
-                        <p class="subtitle is-6">Nov 15, 2024</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="notification is-info is-light mt-4">
             <p class="has-text-weight-semibold mb-2">
                 <span class="icon"><i class="fas fa-lightbulb"></i></span>

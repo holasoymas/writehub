@@ -66,8 +66,7 @@
     @empty
         <div class="empty-state">
             <i class="fas fa-list"></i>
-            <h3 class="title is-4">No lists yet</h3>
-            <p>Create reading lists to organize your favorite posts</p>
+            <h3 class="title is-4">No Posts yet</h3>
         </div>
 
     @endforelse
