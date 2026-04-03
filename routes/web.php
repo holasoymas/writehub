@@ -32,7 +32,7 @@ Route::resource('user', UserController::class)->only([
 
 // adding protection to route
 Route::middleware(["auth"])->group(function () {
-    Route::resource('user', UserController::class)->except(['create', 'store', 'show']);
+    Route::resource('/user', UserController::class)->except(['create', 'store', 'show']);
 
     Route::post('/follow/{user}', [UserFollowController::class, 'follow'])->name('user.follow');
     Route::delete('/unfollow/{user}', [UserFollowController::class, 'unfollow'])->name('user.unfollow');
@@ -40,7 +40,7 @@ Route::middleware(["auth"])->group(function () {
     // for sidebar btns
     Route::post('/follow/toggle/{id}', [UserFollowController::class, 'toggle']);
 
-    Route::resource('posts', PostController::class)->except(['show']);
+    Route::resource('/posts', PostController::class)->except(['show']);
 
     Route::post('/comment/create', [CommentController::class, "create"]);
 
