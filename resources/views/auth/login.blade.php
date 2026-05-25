@@ -55,8 +55,8 @@
             <div class="container">
                 <div class="signup-box box p-5">
                     <div class="has-text-centered mb-5">
-                        <h1 class="title is-3">Join Medium</h1>
-                        <p class="subtitle is-6 has-text-grey">Start reading and writing on Medium today</p>
+                        <h1 class="title is-3">Join Writehub</h1>
+                        <p class="subtitle is-6 has-text-grey">Start reading and writing on Writehub today</p>
                     </div>
 
                     <!-- Social Login Options -->
