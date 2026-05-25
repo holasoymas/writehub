@@ -22,12 +22,20 @@
 
 ---
 
+## Demo
+![Demo video](./public/demo.gif)
+
+---
+
 ## 🛠 Features
 
 - User authentication (login/register)  
 - Create, edit, delete blogs  
-- Like and comment on posts  
+- Like and comment on posts
+- Report inappriopriate blogs
 - Responsive design  
+
+---
 
 ## 💻 Getting Started (Local Development)
 
