@@ -78,29 +78,29 @@
                                         <i class="fas fa-edit"></i>
                                         <span>Edit Profile</span>
                                     </a>
-                                    <a href="#" class="dropdown-item nav">
-                                        <i class="fas fa-key"></i>
-                                        <span>Change Password</span>
-                                    </a>
-                                    <a href="#" class="dropdown-item nav">
-                                        <i class="fas fa-palette"></i>
-                                        <span>Preferences</span>
-                                    </a>
-                                    <a href="#" class="dropdown-item nav">
-                                        <i class="fas fa-shield-alt"></i>
-                                        <span>Privacy & Security</span>
-                                    </a>
+                                    {{-- <a href="#" class="dropdown-item nav"> --}}
+                                    {{--     <i class="fas fa-key"></i> --}}
+                                    {{--     <span>Change Password</span> --}}
+                                    {{-- </a> --}}
+                                    {{-- <a href="#" class="dropdown-item nav"> --}}
+                                    {{--     <i class="fas fa-palette"></i> --}}
+                                    {{--     <span>Preferences</span> --}}
+                                    {{-- </a> --}}
+                                    {{-- <a href="#" class="dropdown-item nav"> --}}
+                                    {{--     <i class="fas fa-shield-alt"></i> --}}
+                                    {{--     <span>Privacy & Security</span> --}}
+                                    {{-- </a> --}}
 
-                                    <hr class="dropdown-divider">
+                                    {{-- <hr class="dropdown-divider"> --}}
 
-                                    <a href="#" class="dropdown-item nav">
-                                        <i class="fas fa-question-circle"></i>
-                                        <span>Help & Support</span>
-                                    </a>
-                                    <a href="#" class="dropdown-item nav">
-                                        <i class="fas fa-info-circle"></i>
-                                        <span>About</span>
-                                    </a>
+                                    {{-- <a href="#" class="dropdown-item nav"> --}}
+                                    {{--     <i class="fas fa-question-circle"></i> --}}
+                                    {{--     <span>Help & Support</span> --}}
+                                    {{-- </a> --}}
+                                    {{-- <a href="#" class="dropdown-item nav"> --}}
+                                    {{--     <i class="fas fa-info-circle"></i> --}}
+                                    {{--     <span>About</span> --}}
+                                    {{-- </a> --}}
 
                                     <hr class="dropdown-divider">
 
